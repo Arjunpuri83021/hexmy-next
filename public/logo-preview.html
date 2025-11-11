@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexmy Logo - Adult Style Options</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #9333EA, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #999;
+            font-size: 16px;
+        }
+
+        .logo-grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        .logo-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid #2a2a2a;
+        }
+
+        .logo-title {
+            color: #EC4899;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo-preview {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            color: #666;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .instructions code {
+            background: #2a2a2a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #9333EA;
+        }
+
+        /* LOGO STYLE 1: Play Button + Bold Text */
+        .logo-1 {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-1 .play-btn {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(147, 51, 234, 0.5);
+            position: relative;
+        }
+
+        .logo-1 .play-btn::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 28px solid white;
+            border-top: 18px solid transparent;
+            border-bottom: 18px solid transparent;
+            margin-left: 6px;
+        }
+
+        .logo-1 .text-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .logo-1 .main-text {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-size: 90px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            line-height: 1;
+        }
+
+        .logo-1 .main-text::before {
+            content: 'HEXMY';
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            -webkit-text-stroke: 6px white;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-1 .sub-text {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 10px;
+            color: #666;
+            padding-left: 4px;
+        }
+
+        /* LOGO STYLE 2: Bold Orange Outline (JennyMovies Style) */
+        .logo-2 {
+            display: inline-block;
+        }
+
+        .logo-2 .main-text {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-size: 110px;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: 3px;
+            color: #FF6B35;
+            position: relative;
+            line-height: 1;
+            transform: skewY(-4deg);
+        }
+
+        .logo-2 .main-text::before {
+            content: 'HEXMY';
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            -webkit-text-stroke: 8px #000;
+            -webkit-text-fill-color: #FF6B35;
+            filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.3));
+        }
+
+        /* LOGO STYLE 3: Modern Gradient Box */
+        .logo-3 {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-3 .icon-box {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Impact, sans-serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 10px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        .logo-3 .main-text {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-size: 95px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            line-height: 1;
+        }
+
+        .logo-3 .main-text::before {
+            content: 'HEXMY';
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            -webkit-text-stroke: 5px white;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .recommended {
+            display: inline-block;
+            background: linear-gradient(135deg, #9333EA, #EC4899);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #9333EA, #EC4899);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .steps {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            color: white;
+        }
+
+        .steps h2 {
+            color: #EC4899;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .steps ol {
+            padding-left: 20px;
+            line-height: 2;
+        }
+
+        .steps li {
+            margin-bottom: 10px;
+        }
+
+        .steps strong {
+            color: #9333EA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Hexmy Logo - Adult Style</h1>
+            <p>Choose your favorite style and screenshot it!</p>
+        </div>
+
+        <div class="logo-grid">
+            <!-- LOGO STYLE 1 -->
+            <div class="logo-card">
+                <div class="logo-title">
+                    Style 1: Play Button + Gradient 
+                    <span class="recommended">✨ RECOMMENDED</span>
+                </div>
+                <div class="logo-preview" id="logo1">
+                    <div class="logo-1">
+                        <div class="play-btn"></div>
+                        <div class="text-wrapper">
+                            <div class="main-text">HEXMY</div>
+                            <div class="sub-text">HEXMY.COM</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructions">
+                    FreePorn inspired • Purple/Pink gradient • Professional look<br>
+                    <strong>Best for:</strong> Modern adult entertainment sites
+                </div>
+            </div>
+
+            <!-- LOGO STYLE 2 -->
+            <div class="logo-card">
+                <div class="logo-title">
+                    Style 2: Bold Orange Outline
+                </div>
+                <div class="logo-preview" id="logo2">
+                    <div class="logo-2">
+                        <div class="main-text">HEXMY</div>
+                    </div>
+                </div>
+                <div class="instructions">
+                    JennyMovies inspired • Bold & eye-catching • Italic style<br>
+                    <strong>Best for:</strong> High-energy, attention-grabbing branding
+                </div>
+            </div>
+
+            <!-- LOGO STYLE 3 -->
+            <div class="logo-card">
+                <div class="logo-title">
+                    Style 3: Modern Gradient Box
+                </div>
+                <div class="logo-preview" id="logo3">
+                    <div class="logo-3">
+                        <div class="icon-box">H</div>
+                        <div class="main-text">HEXMY</div>
+                    </div>
+                </div>
+                <div class="instructions">
+                    Modern & premium • Multi-color gradient • Clean design<br>
+                    <strong>Best for:</strong> Premium adult content platforms
+                </div>
+            </div>
+        </div>
+
+        <div class="steps">
+            <h2>📸 How to Save Logo as PNG:</h2>
+            <ol>
+                <li><strong>Windows:</strong> Press <code>Win + Shift + S</code></li>
+                <li>Select the logo area (drag to select just the logo)</li>
+                <li>Screenshot will be copied to clipboard</li>
+                <li>Open <strong>Paint</strong> (Win + R, type: <code>mspaint</code>)</li>
+                <li>Press <code>Ctrl + V</code> to paste</li>
+                <li>Crop if needed (remove extra space)</li>
+                <li>File → Save As → <strong>PNG</strong></li>
+                <li>Save as: <code>hexmy-logo.png</code></li>
+                <li>Location: <code>c:\Websites\VipWeb\next-hexmy\public\</code></li>
+                <li>Done! ✅</li>
+            </ol>
+
+            <h2 style="margin-top: 30px;">🔧 Update Code:</h2>
+            <p style="color: #999; line-height: 1.8;">
+                Logo file save karne ke baad, Navbar.js aur Footer.js mein filename check karo:<br><br>
+                <code>src="/hexmy-logo.png"</code> (currently <code>src="/hexmy-logo.svg"</code>)<br><br>
+                Agar SVG hai to PNG se replace kar do, ya code mein <code>.svg</code> ko <code>.png</code> kar do.
+            </p>
+
+            <h2 style="margin-top: 30px;">🚀 Test Logo:</h2>
+            <ol>
+                <li>Frontend restart karo: <code>npm run dev</code></li>
+                <li>Browser open karo: <code>http://localhost:3000/</code></li>
+                <li>Logo navbar aur footer mein dikhai dega! ✨</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

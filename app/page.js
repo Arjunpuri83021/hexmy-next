@@ -2,13 +2,19 @@ import Link from 'next/link'
 import { api } from './lib/api'
 import VideoCard from './components/VideoCard'
 import Pagination from './components/Pagination'
+import { generateSeoMetadata } from './utils/seoHelper'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Hexmy Free XXXHD Adult Content Videos And Free Porn Videos',
-  description: 'fry99 hqpornee freeomovie 3gp king adelt movies auntymaza badwap com bf full hd bf hd video bfxxx bigfucktv xxxhd spanbank borwap com pornve wowuncut| Hexmy',
-  alternates: { canonical: '/' },
+// Generate metadata dynamically from SEO Meta or use defaults
+export async function generateMetadata() {
+  const seoMeta = await generateSeoMetadata('/', {
+    title: 'Hexmy Free XXXHD Adult Content Videos And Free Porn Videos',
+    description: 'fry99 hqpornee freeomovie 3gp king adelt movies auntymaza badwap com bf full hd bf hd video bfxxx bigfucktv xxxhd spanbank borwap com pornve wowuncut| Hexmy',
+    alternates: { canonical: '/' },
+  });
+  
+  return seoMeta;
 }
 
 export default async function HomePage({ searchParams }) {

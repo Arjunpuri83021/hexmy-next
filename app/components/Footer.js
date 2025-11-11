@@ -89,11 +89,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">H</span>
+            <Link href="/" className="flex items-center gap-3">
+              {/* Play Button Icon */}
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/50">
+                <div className="w-0 h-0 border-l-[14px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
               </div>
-              <span className="text-xl font-bold text-gradient">Hexmy</span>
+              {/* Text */}
+              <div className="flex flex-col">
+                <div className="flex items-baseline leading-none">
+                  <span className="text-2xl font-black text-cyan-400" style={{ fontFamily: 'Impact, Arial Black, sans-serif', letterSpacing: '1px' }}>HEX</span>
+                  <span className="text-2xl font-black text-emerald-400" style={{ fontFamily: 'Impact, Arial Black, sans-serif', letterSpacing: '1px' }}>MY</span>
+                </div>
+                <span className="text-[10px] text-gray-500 tracking-wider uppercase">hexmy.com</span>
+              </div>
             </Link>
             <p className="text-gray-400 text-sm">
               Premium adult entertainment platform featuring high-quality videos from top performers worldwide.
@@ -121,7 +129,7 @@ export default function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-xs bg-gray-800 hover:bg-purple-600 px-2 py-1 rounded transition-colors duration-200"
+                  className="text-xs bg-gray-800 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-emerald-500 px-2 py-1 rounded transition-all duration-200"
                 >
                   {link.name}
                 </Link>
@@ -140,7 +148,7 @@ export default function Footer() {
                 <Link
                   key={category.name}
                   href={category.href}
-                  className="text-xs bg-gray-800 hover:bg-purple-600 px-2 py-1 rounded transition-colors duration-200"
+                  className="text-xs bg-gray-800 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-emerald-500 px-2 py-1 rounded transition-all duration-200"
                 >
                   {category.name}
                 </Link>
@@ -159,7 +167,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={`/tag/${tag.slug || tag.name?.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="text-xs bg-gray-800 hover:bg-purple-600 px-2 py-1 rounded transition-colors duration-200"
+                  className="text-xs bg-gray-800 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-emerald-500 px-2 py-1 rounded transition-all duration-200"
                 >
                   {tag.name}
                 </Link>
@@ -194,13 +202,13 @@ export default function Footer() {
               © {new Date().getFullYear()} Hexmy. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
-              <Link href="/privacy" className="hover:text-purple-400 transition-colors duration-200">
+              <Link href="/privacy" className="hover:text-cyan-400 transition-colors duration-200">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-purple-400 transition-colors duration-200">
+              <Link href="/terms" className="hover:text-cyan-400 transition-colors duration-200">
                 Terms of Service
               </Link>
-              <Link href="/contact" className="hover:text-purple-400 transition-colors duration-200">
+              <Link href="/contact" className="hover:text-cyan-400 transition-colors duration-200">
                 Contact
               </Link>
             </div>

@@ -133,11 +133,19 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">H</span>
+          <Link href="/" className="flex items-center gap-3">
+            {/* Play Button Icon */}
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/50">
+              <div className="w-0 h-0 border-l-[14px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
             </div>
-            <span className="text-xl font-bold text-gradient">Hexmy</span>
+            {/* Text */}
+            <div className="flex flex-col">
+              <div className="flex items-baseline leading-none">
+                <span className="text-2xl font-black text-cyan-400" style={{ fontFamily: 'Impact, Arial Black, sans-serif', letterSpacing: '1px' }}>HEX</span>
+                <span className="text-2xl font-black text-emerald-400" style={{ fontFamily: 'Impact, Arial Black, sans-serif', letterSpacing: '1px' }}>MY</span>
+              </div>
+              <span className="text-[10px] text-gray-500 tracking-wider uppercase">hexmy.com</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -148,7 +156,7 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-1 hover:text-purple-400 transition-colors duration-200"
+                  className="flex items-center space-x-1 hover:text-cyan-400 transition-colors duration-200"
                 >
                   <Icon size={16} />
                   <span>{item.name}</span>
@@ -167,7 +175,7 @@ export default function Navbar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchSuggestions.length > 0 && setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="w-64 px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 transition-colors duration-200"
+                className="w-64 px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors duration-200"
               />
               <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
               
@@ -218,7 +226,7 @@ export default function Navbar() {
                   placeholder="Search videos, stars..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
                 />
                 <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
               </div>
@@ -277,7 +285,7 @@ export default function Navbar() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => searchSuggestions.length > 0 && setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                    className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500"
+                    className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
                   />
                   <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
                 </form>

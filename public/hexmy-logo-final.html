@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexmy Logo - FreshPRN Style</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .logo-wrapper {
+            background: #16213e;
+            padding: 60px 80px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Play Button Icon */
+        .icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .icon::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 18px solid white;
+            border-top: 11px solid transparent;
+            border-bottom: 11px solid transparent;
+            margin-left: 4px;
+        }
+
+        /* Text Container */
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Main Text: HEX (blue) + MY (green) */
+        .main-text {
+            display: flex;
+            align-items: baseline;
+            line-height: 1;
+        }
+
+        .hex-text {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #00d4ff;
+            text-transform: uppercase;
+        }
+
+        .my-text {
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #00ff88;
+            text-transform: uppercase;
+        }
+
+        /* Subtext: hexmy.com */
+        .sub-text {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #8899aa;
+            text-transform: uppercase;
+            padding-left: 2px;
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            max-width: 600px;
+        }
+
+        .instructions code {
+            background: #2a2a2a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #00d4ff;
+        }
+
+        .instructions strong {
+            color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-wrapper">
+        <div class="logo">
+            <!-- Play Button Icon -->
+            <div class="icon"></div>
+            
+            <!-- Text -->
+            <div class="text-container">
+                <div class="main-text">
+                    <span class="hex-text">HEX</span>
+                    <span class="my-text">MY</span>
+                </div>
+                <div class="sub-text">hexmy.com</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <strong>📸 Screenshot Instructions:</strong><br>
+        Press <code>Win + Shift + S</code> → Select logo → Paste in Paint → Save as <code>hexmy-logo.png</code><br>
+        Location: <code>c:\Websites\VipWeb\next-hexmy\public\</code>
+    </div>
+</body>
+</html>

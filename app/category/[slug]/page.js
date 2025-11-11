@@ -1,6 +1,7 @@
 import { api } from '../../lib/api'
 import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
+import { generateSeoMetadata } from '../../utils/seoHelper'
 
 export const revalidate = 60
 
@@ -116,6 +117,17 @@ const categoryMeta = {
 export async function generateMetadata({ params, searchParams }) {
   const slug = params.slug
   const page = Number(searchParams?.page || 1)
+  
+  // Try to fetch custom SEO meta from admin panel
+  const pagePath = `/category/${slug}`
+  const customSeo = await generateSeoMetadata(pagePath, null)
+  
+  // If custom SEO exists, use it (but keep pagination logic for page > 1)
+  if (customSeo && page === 1) {
+    return customSeo
+  }
+  
+  // Otherwise, use default dynamic meta (original logic)
   const titleBase = categoryTitles[slug] || slug.replace(/-/g, ' ')
   const meta = categoryMeta[slug]
   const title = meta ? meta.title(page) : (page > 1 ? `${titleBase} Videos - Page ${page}` : `${titleBase} Videos`)

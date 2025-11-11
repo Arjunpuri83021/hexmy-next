@@ -2,11 +2,23 @@ import Link from 'next/link'
 import { api } from '../../lib/api'
 import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
+import { generateSeoMetadata } from '../../utils/seoHelper'
 
 export async function generateMetadata({ params, searchParams }) {
   const tag = decodeURIComponent(params.tag)
   const page = Number(searchParams?.page || 1)
   const titleTag = tag.replace(/-/g, ' ')
+  
+  // Try to fetch custom SEO meta from admin panel
+  const pagePath = `/tag/${params.tag}`
+  const customSeo = await generateSeoMetadata(pagePath, null)
+  
+  // If custom SEO exists, use it (but keep pagination logic for page > 1)
+  if (customSeo && page === 1) {
+    return customSeo
+  }
+  
+  // Otherwise, use default dynamic meta (original logic)
   // Fetch minimal data to enrich meta (total count + first image)
   let totalRecords = 0
   let totalPages = 1

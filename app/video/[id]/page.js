@@ -3,6 +3,7 @@ import Link from 'next/link'
 import VideoRedirect from '../../components/VideoRedirect'
 import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
+import { generateSeoMetadata } from '../../utils/seoHelper'
 
 export const revalidate = 60
 
@@ -23,6 +24,18 @@ function slugify(str = '') {
 export async function generateMetadata({ params }) {
   const raw = params.id
   const id = extractMongoId(raw)
+  
+  // Try to fetch custom SEO meta from admin panel
+  // Check both with full slug and just /video/{id}
+  const pagePath = `/video/${raw}`
+  const customSeo = await generateSeoMetadata(pagePath, null)
+  
+  // If custom SEO exists, use it
+  if (customSeo) {
+    return customSeo
+  }
+  
+  // Otherwise, use default dynamic meta (original logic)
   let video
   try {
     video = await api.getVideoById(id)

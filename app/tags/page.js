@@ -1,12 +1,18 @@
 import Link from 'next/link'
 import { api } from '../lib/api'
+import { generateSeoMetadata } from '../utils/seoHelper'
 
 export const revalidate = 300
 
-export const metadata = {
-  title: 'Best All Porn Tags - Browse by Category | Hexmy',
-  description: 'Browse all porn video tags and categories on Hexmy. Find your favorite adult content by tag - organized alphabetically for easy navigation.',
-  alternates: { canonical: '/tags' },
+export async function generateMetadata() {
+  const customSeo = await generateSeoMetadata('/tags', null)
+  if (customSeo) return customSeo
+  
+  return {
+    title: 'Best All Porn Tags - Browse by Category | Hexmy',
+    description: 'Browse all porn video tags and categories on Hexmy. Find your favorite adult content by tag - organized alphabetically for easy navigation.',
+    alternates: { canonical: '/tags' },
+  }
 }
 
 const LETTERS = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')]

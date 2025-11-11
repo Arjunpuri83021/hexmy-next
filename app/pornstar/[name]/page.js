@@ -1,12 +1,24 @@
 import { api } from '../../lib/api'
 import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
+import { generateSeoMetadata } from '../../utils/seoHelper'
 
 export const revalidate = 60
 
 export async function generateMetadata({ params, searchParams }) {
   const name = decodeURIComponent(params.name)
   const page = Number(searchParams?.page || 1)
+  
+  // Try to fetch custom SEO meta from admin panel
+  const pagePath = `/pornstar/${params.name}`
+  const customSeo = await generateSeoMetadata(pagePath, null)
+  
+  // If custom SEO exists, use it (but keep pagination logic for page > 1)
+  if (customSeo && page === 1) {
+    return customSeo
+  }
+  
+  // Otherwise, use default dynamic meta (original logic)
   const displayName = name.replace(/-/g, ' ')
   const title = `hexmy - ${displayName} xvids porno missax trisha paytas porn`
   const description = `sexy movie super movie ${displayName}. chinese family sex huge tits Porn Videos big natural boobs download vporn sex videos`

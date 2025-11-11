@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexmy Logo Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #1a1a1a;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo-container {
+            background: transparent;
+            padding: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Style 1: Play Button + Bold Text (FreePorn inspired) */
+        .logo-style-1 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 25px solid white;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+
+        .logo-text-1 {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .main-text-1 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 
+                -3px -3px 0 #fff,
+                3px -3px 0 #fff,
+                -3px 3px 0 #fff,
+                3px 3px 0 #fff,
+                0 0 20px rgba(147, 51, 234, 0.5);
+            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .sub-text-1 {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 8px;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        /* Logo Style 2: Bold Outline (JennyMovies inspired) */
+        .logo-style-2 {
+            position: relative;
+        }
+
+        .main-text-2 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 90px;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: #FF6B35;
+            text-shadow: 
+                -4px -4px 0 #000,
+                4px -4px 0 #000,
+                -4px 4px 0 #000,
+                4px 4px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000,
+                6px 6px 15px rgba(0, 0, 0, 0.7);
+            transform: skewY(-3deg);
+        }
+
+        /* Logo Style 3: Modern Gradient */
+        .logo-style-3 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-3 {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            font-weight: 900;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .main-text-3 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 80px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .main-text-3::before {
+            content: 'HEXMY';
+            position: absolute;
+            left: -3px;
+            top: -3px;
+            z-index: -1;
+            background: white;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 12px;
+            color: white;
+            max-width: 800px;
+            line-height: 1.8;
+        }
+
+        .instructions h2 {
+            color: #EC4899;
+            margin-top: 0;
+        }
+
+        .instructions code {
+            background: #1a1a1a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #9333EA;
+        }
+
+        .label {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h2>🎨 Hexmy Logo Options - Screenshot Karo!</h2>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Neeche 3 logo styles hain</li>
+            <li>Jo pasand aaye uska screenshot lo (Windows: <code>Win + Shift + S</code>)</li>
+            <li>Screenshot ko crop karo (sirf logo)</li>
+            <li>Save as: <code>hexmy-logo.png</code></li>
+            <li>File ko <code>c:\Websites\VipWeb\next-hexmy\public\</code> mein save karo</li>
+        </ol>
+        <p><strong>Ya phir:</strong> Photopea.com par ja kar manually bana lo (guide neeche hai)</p>
+    </div>
+
+    <div class="logo-wrapper">
+        <div class="label">Style 1: Play Button + Gradient (FreePorn inspired) - RECOMMENDED ✨</div>
+        <div class="logo-container">
+            <div class="logo-style-1">
+                <div class="play-button">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="logo-text-1">
+                    <div class="main-text-1">HEXMY</div>
+                    <div class="sub-text-1">HEXMY.COM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo-wrapper">
+        <div class="label">Style 2: Bold Outline Italic (JennyMovies inspired)</div>
+        <div class="logo-container">
+            <div class="logo-style-2">
+                <div class="main-text-2">HEXMY</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo-wrapper">
+        <div class="label">Style 3: Modern Gradient with Icon</div>
+        <div class="logo-container">
+            <div class="logo-style-3">
+                <div class="icon-3">H</div>
+                <div class="main-text-3">HEXMY</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h2>📸 Screenshot Instructions:</h2>
+        <p><strong>Windows:</strong></p>
+        <ol>
+            <li>Press <code>Win + Shift + S</code></li>
+            <li>Select logo area (drag to select)</li>
+            <li>Screenshot clipboard mein save ho jayega</li>
+            <li>Paint open karo (<code>Win + R</code>, type <code>mspaint</code>)</li>
+            <li><code>Ctrl + V</code> paste karo</li>
+            <li>File → Save As → PNG</li>
+            <li>Name: <code>hexmy-logo.png</code></li>
+            <li>Location: <code>c:\Websites\VipWeb\next-hexmy\public\</code></li>
+        </ol>
+
+        <h2>🎨 Photopea Instructions (Better Quality):</h2>
+        <ol>
+            <li>Go to: <a href="https://www.photopea.com/" target="_blank" style="color: #EC4899;">https://www.photopea.com/</a></li>
+            <li>File → New → 800x200px, Transparent background</li>
+            <li><strong>Play Button:</strong>
+                <ul>
+                    <li>Rectangle Tool (U) → 70x70px rounded (20px radius)</li>
+                    <li>Fill: Gradient (#9333EA to #EC4899)</li>
+                    <li>Polygon Tool → 3 sides (triangle)</li>
+                    <li>Fill: White, rotate right</li>
+                </ul>
+            </li>
+            <li><strong>Text "HEXMY":</strong>
+                <ul>
+                    <li>Text Tool (T) → Type "HEXMY"</li>
+                    <li>Font: Impact or Arial Black</li>
+                    <li>Size: 100px</li>
+                    <li>Color: Gradient (#9333EA to #EC4899)</li>
+                    <li>Right-click layer → Blending Options → Stroke: 4px white</li>
+                    <li>Drop Shadow: 50% black, 5px offset</li>
+                </ul>
+            </li>
+            <li><strong>Subtext ".COM":</strong>
+                <ul>
+                    <li>Text Tool → Type "HEXMY.COM"</li>
+                    <li>Font: Arial</li>
+                    <li>Size: 20px</li>
+                    <li>Color: #999999</li>
+                    <li>Character spacing: 200</li>
+                </ul>
+            </li>
+            <li>File → Export As → PNG</li>
+            <li>Save to: <code>c:\Websites\VipWeb\next-hexmy\public\hexmy-logo.png</code></li>
+        </ol>
+
+        <h2>🚀 After Creating Logo:</h2>
+        <p>Logo file save karne ke baad, Navbar.js aur Footer.js already update hain!</p>
+        <p>Bas filename check karo: <code>/hexmy-logo.png</code> (currently <code>/hexmy-logo.svg</code>)</p>
+        <p>Ya phir SVG ko PNG se replace kar do same name se.</p>
+    </div>
+</body>
+</html>

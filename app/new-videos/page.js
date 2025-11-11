@@ -1,13 +1,19 @@
 import { api } from '../lib/api'
 import VideoCard from '../components/VideoCard'
 import Pagination from '../components/Pagination'
+import { generateSeoMetadata } from '../utils/seoHelper'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'New Videos',
-  description: 'Watch the latest new videos on Hexmy with high-quality streaming.',
-  alternates: { canonical: '/new-videos' },
+export async function generateMetadata() {
+  const customSeo = await generateSeoMetadata('/new-videos', null)
+  if (customSeo) return customSeo
+  
+  return {
+    title: 'New Videos',
+    description: 'Watch the latest new videos on Hexmy with high-quality streaming.',
+    alternates: { canonical: '/new-videos' },
+  }
 }
 
 // Generate unique content from videos

@@ -1,9 +1,15 @@
 import Link from 'next/link'
+import { generateSeoMetadata } from '../utils/seoHelper'
 
-export const metadata = {
-  title: 'Categories',
-  description: 'Browse video categories on Hexmy.',
-  alternates: { canonical: '/categories' },
+export async function generateMetadata() {
+  const customSeo = await generateSeoMetadata('/categories', null)
+  if (customSeo) return customSeo
+  
+  return {
+    title: 'Categories',
+    description: 'Browse video categories on Hexmy.',
+    alternates: { canonical: '/categories' },
+  }
 }
 
 const categories = [

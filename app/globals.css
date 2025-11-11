@@ -6,8 +6,8 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 10, 10, 14; /* deep slate */
   --background-end-rgb: 6, 8, 12;     /* near black */
-  --brand-primary: 168, 85, 247;      /* purple-500 */
-  --brand-accent: 236, 72, 153;       /* pink-500 */
+  --brand-primary: 34, 211, 238;      /* cyan-400 - matches logo */
+  --brand-accent: 52, 211, 153;       /* emerald-400 - matches logo */
 }
 
 @media (prefers-color-scheme: dark) {

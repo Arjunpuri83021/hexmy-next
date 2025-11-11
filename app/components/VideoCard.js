@@ -111,7 +111,7 @@ export default function VideoCard({ video, priority = false }) {
               {/* Loading placeholder */}
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
-                  <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
             </>
@@ -147,7 +147,7 @@ export default function VideoCard({ video, priority = false }) {
 
 
           {/* Quality Badge */}
-          <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs px-2 py-1 rounded font-semibold">
+          <div className="absolute top-2 left-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs px-2 py-1 rounded font-semibold shadow-lg">
             HD
           </div>
         </div>
@@ -157,7 +157,7 @@ export default function VideoCard({ video, priority = false }) {
       <div className="p-4 space-y-3">
         {/* Title */}
         <Link href={`/video/${getVideoUrlSegment()}`} onClick={handleVideoClick}>
-          <h3 className="text-white font-medium text-sm line-clamp-2 hover:text-purple-400 transition-colors duration-200">
+          <h3 className="text-white font-medium text-sm line-clamp-2 hover:text-cyan-400 transition-colors duration-200">
             {getVideoTitle()}
           </h3>
         </Link>
@@ -185,7 +185,7 @@ export default function VideoCard({ video, priority = false }) {
               <Link
                 key={index}
                 href={`/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`}
-                className="text-xs bg-gray-700 hover:bg-purple-600 text-gray-300 hover:text-white px-2 py-1 rounded transition-colors duration-200"
+                className="text-xs bg-gray-700 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-emerald-500 text-gray-300 hover:text-white px-2 py-1 rounded transition-all duration-200"
               >
                 {tag}
               </Link>
