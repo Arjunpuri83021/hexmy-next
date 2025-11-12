@@ -94,7 +94,10 @@ export default async function HijabiPage({ searchParams }) {
       {customContent && customContent.isActive && (
         <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">{customContent.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br>') }} />
+          <div 
+            className="custom-content-display"
+            dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br>') }} 
+          />
         </div>
       )}
       

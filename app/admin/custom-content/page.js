@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Eye, EyeOff, Search } from 'lucide-react'
 import Protected from '../Protected'
 import AdminNavbar from '../components/AdminNavbar'
+import RichTextEditor from '../components/RichTextEditor'
 import '../AdminStyles.css'
 
 // Helper functions for slug guidance
@@ -414,13 +415,10 @@ export default function CustomContentManagement() {
                           
                           <div className="mb-3">
                             <label className="form-label">Content</label>
-                            <textarea
+                            <RichTextEditor
                               value={formData.content}
-                              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                              className="form-control"
-                              rows="10"
-                              placeholder="Enter your custom content here..."
-                              required
+                              onChange={(content) => setFormData({ ...formData, content })}
+                              placeholder="Enter your custom content here. Use the toolbar to format text, add headings, links, and more..."
                             />
                           </div>
                         </form>

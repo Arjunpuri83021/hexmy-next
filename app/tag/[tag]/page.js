@@ -340,20 +340,20 @@ export default async function TagPage({ params, searchParams }) {
       <Pagination basePath={`/tag/${params.tag}`} currentPage={page} totalPages={totalPages} />
 
       {/* Custom or Generated content section - Below videos, only on page 1 */}
-      {customContent && (
-        <div className="mt-8 text-gray-300 leading-relaxed bg-gray-800/50 rounded-lg p-6">
+      {customContent && customContent.isActive && (
+        <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">{customContent.title}</h2>
           <div 
-            className="prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br/>') }}
+            className="custom-content-display"
+            dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br>') }} 
           />
         </div>
       )}
       
       {/* Fallback to generated content if no custom content */}
-      {generatedContent && (
+      {!customContent && generatedContent && (
         <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">About {tag.replace(/-/g, ' ')} Sex Videos</h2>
+          <h2 className="text-xl font-semibold mb-4">About {tag.replace(/-/g, ' ')} Videos</h2>
           <p>{generatedContent.intro}</p>
           <p>{generatedContent.details}</p>
           <p>{generatedContent.navigation}</p>

@@ -202,6 +202,9 @@ export default function Footer() {
               © {new Date().getFullYear()} Hexmy. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
+              <Link href="/about" className="hover:text-cyan-400 transition-colors duration-200">
+                About Us
+              </Link>
               <Link href="/privacy" className="hover:text-cyan-400 transition-colors duration-200">
                 Privacy Policy
               </Link>
