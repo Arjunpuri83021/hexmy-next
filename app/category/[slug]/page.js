@@ -3,6 +3,26 @@ import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
 import { generateSeoMetadata } from '../../utils/seoHelper'
 
+// Fetch custom content for category
+async function getCustomContent(slug) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+    const response = await fetch(`${baseUrl}/custom-content/category/${slug}`, {
+      cache: 'no-store' // Always fetch fresh content
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      return data
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Error fetching custom content:', error)
+    return null
+  }
+}
+
 export const revalidate = 60
 
 const categoryTitles = {
@@ -263,8 +283,11 @@ export default async function CategoryPage({ params, searchParams }) {
   const data = await api.searchPosts(query, page, 16, '').catch(() => ({ records: [], totalPages: 1, totalRecords: 0 }))
   const titleBase = categoryTitles[slug] || slug.replace(/-/g, ' ')
   
-  // Generate unique content for page 1
-  const content = page === 1 ? getCategoryContent(slug, titleBase, data.totalRecords || 0, data.totalPages || 1) : null
+  // Try to fetch custom content first (only on page 1)
+  const customContent = page === 1 ? await getCustomContent(slug) : null
+  
+  // Generate unique content for page 1 if no custom content
+  const content = page === 1 && !customContent ? getCategoryContent(slug, titleBase, data.totalRecords || 0, data.totalPages || 1) : null
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -283,8 +306,16 @@ export default async function CategoryPage({ params, searchParams }) {
       {/* Pagination */}
       <Pagination basePath={`/category/${slug}`} currentPage={page} totalPages={data.totalPages || 1} />
       
-      {/* Unique content section - Below videos, only on page 1 */}
-      {content && (
+      {/* Custom or generated content section - Below videos, only on page 1 */}
+      {customContent && customContent.isActive && (
+        <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">{customContent.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br>') }} />
+        </div>
+      )}
+      
+      {/* Fallback to generated content if no custom content */}
+      {!customContent && content && (
         <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">About {titleBase} Videos</h2>
           <p>{content.intro}</p>

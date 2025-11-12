@@ -2,6 +2,26 @@ import { api } from '../lib/api'
 import VideoCard from '../components/VideoCard'
 import Pagination from '../components/Pagination'
 
+// Fetch custom content for Indian page
+async function getCustomContent() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+    const response = await fetch(`${baseUrl}/custom-content/indian/indian`, {
+      cache: 'no-store'
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      return data
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Error fetching custom content:', error)
+    return null
+  }
+}
+
 export const revalidate = 60
 
 export const metadata = {
@@ -57,8 +77,11 @@ export default async function IndianPage({ searchParams }) {
   const totalPages = res.totalPages || (res.totalRecords ? Math.max(1, Math.ceil(Number(res.totalRecords) / 16)) : 1)
   const totalRecords = res.totalRecords || 0
   
-  // Generate unique content for page 1
-  const content = page === 1 ? generateIndianContent(list, totalRecords, totalPages) : null
+  // Try to fetch custom content first (only on page 1)
+  const customContent = page === 1 ? await getCustomContent() : null
+  
+  // Generate unique content for page 1 if no custom content
+  const content = page === 1 && !customContent ? generateIndianContent(list, totalRecords, totalPages) : null
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -77,8 +100,16 @@ export default async function IndianPage({ searchParams }) {
       {/* Pagination */}
       <Pagination basePath="/indian?" currentPage={page} totalPages={totalPages} />
       
-      {/* Unique content section - Below videos, only on page 1 */}
-      {content && (
+      {/* Custom or generated content section - Below videos, only on page 1 */}
+      {customContent && customContent.isActive && (
+        <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">{customContent.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br>') }} />
+        </div>
+      )}
+      
+      {/* Fallback to generated content if no custom content */}
+      {!customContent && content && (
         <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">About Indian Desi Videos</h2>
           <p>{content.intro}</p>

@@ -43,6 +43,11 @@ export default function AdminNavbar() {
             </Link>
           </li>
           <li>
+            <Link className={isActive("/admin/custom-content") ? "active" : ""} href="/admin/custom-content">
+              <i className="bi bi-file-text me-1"></i>Custom Content
+            </Link>
+          </li>
+          <li>
             <Link className={isActive("/admin/manage-admins") ? "active" : ""} href="/admin/manage-admins">Manage Admins</Link>
           </li>
           <li>

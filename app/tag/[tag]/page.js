@@ -86,6 +86,26 @@ async function getData(tag, page) {
   return { list: items, totalPages, totalRecords }
 }
 
+// Fetch custom content for tag
+async function getCustomContent(tag) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+    const response = await fetch(`${baseUrl}/custom-content/tag/${tag}`, {
+      cache: 'no-store' // Always fetch fresh content
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      return data
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Error fetching custom content:', error)
+    return null
+  }
+}
+
 // Generate unique content based on tag and actual videos
 function generateTagContent(tag, totalRecords, totalPages, page, videos) {
   const tagName = tag.replace(/-/g, ' ')
@@ -294,8 +314,11 @@ export default async function TagPage({ params, searchParams }) {
   const page = Number(params.page || searchParams?.page || 1)
   const { list, totalPages, totalRecords } = await getData(tag, page)
   
-  // Generate unique content for page 1 using actual videos
-  const content = page === 1 ? generateTagContent(tag, totalRecords, totalPages, page, list) : null
+  // Try to get custom content first (only for page 1)
+  const customContent = page === 1 ? await getCustomContent(tag) : null
+  
+  // Generate unique content for page 1 using actual videos (fallback)
+  const generatedContent = page === 1 && !customContent ? generateTagContent(tag, totalRecords, totalPages, page, list) : null
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -314,14 +337,25 @@ export default async function TagPage({ params, searchParams }) {
       {/* Pagination */}
       <Pagination basePath={`/tag/${params.tag}`} currentPage={page} totalPages={totalPages} />
 
-      {/* Unique content section - Below videos, only on page 1 */}
-      {content && (
+      {/* Custom or Generated content section - Below videos, only on page 1 */}
+      {customContent && (
+        <div className="mt-8 text-gray-300 leading-relaxed bg-gray-800/50 rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">{customContent.title}</h2>
+          <div 
+            className="prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: customContent.content.replace(/\n/g, '<br/>') }}
+          />
+        </div>
+      )}
+      
+      {/* Fallback to generated content if no custom content */}
+      {generatedContent && (
         <div className="mt-8 text-gray-300 leading-relaxed space-y-4 bg-gray-800/50 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">About {tag.replace(/-/g, ' ')} Sex Videos</h2>
-          <p>{content.intro}</p>
-          <p>{content.details}</p>
-          <p>{content.navigation}</p>
-          <p>{content.closing}</p>
+          <p>{generatedContent.intro}</p>
+          <p>{generatedContent.details}</p>
+          <p>{generatedContent.navigation}</p>
+          <p>{generatedContent.closing}</p>
         </div>
       )}
     </div>
