@@ -86,22 +86,24 @@ async function getData(tag, page) {
   return { list: items, totalPages, totalRecords }
 }
 
-// Fetch custom content for tag
+// Fetch custom content for tag - with fallback for when backend is down
 async function getCustomContent(tag) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
     const response = await fetch(`${baseUrl}/custom-content/tag/${tag}`, {
-      cache: 'no-store' // Always fetch fresh content
+      cache: 'no-store', // Always fetch fresh content
+      next: { revalidate: 300 } // Cache for 5 minutes
     })
-    
+
     if (response.ok) {
       const data = await response.json()
       return data
     }
-    
+
     return null
   } catch (error) {
-    console.error('Error fetching custom content:', error)
+    console.error('Error fetching custom content (backend may be down):', error)
+    // Return null to fallback to generated content
     return null
   }
 }

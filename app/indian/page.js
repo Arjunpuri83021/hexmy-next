@@ -2,12 +2,13 @@ import { api } from '../lib/api'
 import VideoCard from '../components/VideoCard'
 import Pagination from '../components/Pagination'
 
-// Fetch custom content for Indian page
+// Fetch custom content for Indian page - with fallback for when backend is down
 async function getCustomContent() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
     const response = await fetch(`${baseUrl}/custom-content/indian/indian`, {
-      cache: 'no-store'
+      cache: 'no-store',
+      next: { revalidate: 300 } // Cache for 5 minutes
     })
     
     if (response.ok) {
@@ -17,7 +18,8 @@ async function getCustomContent() {
     
     return null
   } catch (error) {
-    console.error('Error fetching custom content:', error)
+    console.error('Error fetching custom content (backend may be down):', error)
+    // Return null to fallback to generated content
     return null
   }
 }

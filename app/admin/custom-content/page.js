@@ -68,7 +68,8 @@ export default function CustomContentManagement() {
       
       if (filterType) params.append('pageType', filterType)
       
-      const response = await fetch(`http://localhost:5000/custom-content?${params}`)
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      const response = await fetch(`${baseUrl}/custom-content?${params}`)
       const data = await response.json()
       
       setContent(data.content || [])
@@ -92,9 +93,10 @@ export default function CustomContentManagement() {
       
       console.log('Sending payload:', payload)
       
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
       const url = editingContent 
-        ? `http://localhost:5000/custom-content/${editingContent._id}`
-        : 'http://localhost:5000/custom-content'
+        ? `${baseUrl}/custom-content/${editingContent._id}`
+        : `${baseUrl}/custom-content`
       
       const method = editingContent ? 'PUT' : 'POST'
       
@@ -144,7 +146,8 @@ export default function CustomContentManagement() {
     if (!confirm('Are you sure you want to delete this content?')) return
     
     try {
-      const response = await fetch(`http://localhost:5000/custom-content/${id}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      const response = await fetch(`${baseUrl}/custom-content/${id}`, {
         method: 'DELETE'
       })
       
@@ -158,7 +161,8 @@ export default function CustomContentManagement() {
 
   const toggleStatus = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/custom-content/${id}/toggle`, {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      const response = await fetch(`${baseUrl}/custom-content/${id}/toggle`, {
         method: 'PATCH'
       })
       

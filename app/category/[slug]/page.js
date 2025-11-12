@@ -3,12 +3,13 @@ import VideoCard from '../../components/VideoCard'
 import Pagination from '../../components/Pagination'
 import { generateSeoMetadata } from '../../utils/seoHelper'
 
-// Fetch custom content for category
+// Fetch custom content for category - with fallback for when backend is down
 async function getCustomContent(slug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
     const response = await fetch(`${baseUrl}/custom-content/category/${slug}`, {
-      cache: 'no-store' // Always fetch fresh content
+      cache: 'no-store', // Always fetch fresh content
+      next: { revalidate: 300 } // Cache for 5 minutes
     })
     
     if (response.ok) {
@@ -18,7 +19,8 @@ async function getCustomContent(slug) {
     
     return null
   } catch (error) {
-    console.error('Error fetching custom content:', error)
+    console.error('Error fetching custom content (backend may be down):', error)
+    // Return null to fallback to generated content
     return null
   }
 }
