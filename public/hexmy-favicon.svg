@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Black background to match Hexmy site theme -->
+  <rect x="0" y="0" width="64" height="64" fill="#000000" />
+
+  <!-- "He" in Hexmy yellow on the left -->
+  <text
+    x="6"
+    y="40"
+    fill="#FFD700"
+    font-family="'Arial Black', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+    font-weight="900"
+    font-size="26"
+  >He</text>
+
+  <!-- "my" in white on the right -->
+  <text
+    x="30"
+    y="40"
+    fill="#FFFFFF"
+    font-family="'Arial Black', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+    font-weight="900"
+    font-size="26"
+  >my</text>
+</svg>

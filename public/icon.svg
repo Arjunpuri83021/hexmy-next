@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Transparent background (no rect fill) for clean favicon rendering -->
+
+  <!-- Gradient matching Hexmy logo colors: rgb(34 211 238) to rgb(52 211 153) -->
+  <defs>
+    <linearGradient id="hexmyAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgb(34,211,238)" />
+      <stop offset="100%" stop-color="rgb(52,211,153)" />
+    </linearGradient>
+  </defs>
+
+  <!-- Play button base: pure black triangle with soft corners -->
+  <path
+    d="M 176 120
+       Q 160 128 160 148
+       L 160 364
+       Q 160 384 176 392
+       L 360 292
+       Q 376 284 376 256
+       Q 376 228 360 220
+       Z"
+    fill="#000000"
+  />
+
+  <!-- Neon accent outline following the play shape using Hexmy gradient -->
+  <path
+    d="M 184 144
+       Q 176 148 176 158
+       L 176 354
+       Q 176 364 184 368
+       L 344 280
+       Q 352 276 352 256
+       Q 352 236 344 232
+       Z"
+    fill="none"
+    stroke="url(#hexmyAccent)"
+    stroke-width="16"
+    stroke-linejoin="round"
+  />
+
+  <!-- Integrated "H" inside the play button using Hexmy gradient -->
+  <!-- Left vertical bar of H -->
+  <rect
+    x="210"
+    y="190"
+    width="28"
+    height="140"
+    rx="12"
+    fill="url(#hexmyAccent)"
+  />
+
+  <!-- Right vertical bar of H -->
+  <rect
+    x="274"
+    y="190"
+    width="28"
+    height="140"
+    rx="12"
+    fill="url(#hexmyAccent)"
+  />
+
+  <!-- Middle bar of H -->
+  <rect
+    x="214"
+    y="247"
+    width="84"
+    height="26"
+    rx="12"
+    fill="url(#hexmyAccent)"
+  />
+
+  <!-- Soft top highlight for a slight glossy feel (optional, subtle) -->
+  <path
+    d="M 188 156
+       Q 256 118 332 156"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="10"
+    stroke-linecap="round"
+    opacity="0.25"
+  />
+</svg>
