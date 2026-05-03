@@ -83,7 +83,7 @@ export async function generateMetadata({ params }) {
       description,
       url: canonical,
       siteName: 'Hexmy',
-      type: previewVideoUrl ? 'video.movie' : 'video.other',
+      type: previewVideoUrl ? 'video.other' : 'website',
       locale: 'en_US',
       images: [
         {
@@ -94,46 +94,33 @@ export async function generateMetadata({ params }) {
         }
       ],
       ...(previewVideoUrl && {
-        video: {
-          url: previewVideoUrl,
-          width: 1280,
-          height: 720,
-          type: 'video/mp4',
-        },
-        'video:url': previewVideoUrl,
-        'video:secure_url': previewVideoUrl.startsWith('https') ? previewVideoUrl : previewVideoUrl.replace('http', 'https'),
-        'video:type': 'video/mp4',
-        'video:width': 1280,
-        'video:height': 720,
+        videos: [
+          {
+            url: previewVideoUrl,
+            width: 1280,
+            height: 720,
+            type: 'video/mp4',
+          }
+        ],
       }),
     },
     twitter: {
-      card: previewVideoUrl ? 'player' : 'summary_large_image',
+      card: 'summary_large_image',
       title,
       description,
       images: [imageUrl],
       creator: '@hexmy',
       ...(previewVideoUrl && {
-        players: [
-          {
-            playerUrl: canonical,
-            streamUrl: previewVideoUrl,
-            width: 1280,
-            height: 720,
-          }
-        ]
+        'twitter:card': 'player',
+        'twitter:player': canonical,
+        'twitter:player:width': '1280',
+        'twitter:player:height': '720',
+        'twitter:player:stream': previewVideoUrl,
       })
     },
     other: {
       'video:duration': video?.minutes ? `${video.minutes * 60}` : undefined,
       'video:release_date': video?.createdAt || undefined,
-      ...(previewVideoUrl && {
-        'og:video': previewVideoUrl,
-        'og:video:secure_url': previewVideoUrl.startsWith('https') ? previewVideoUrl : previewVideoUrl.replace('http', 'https'),
-        'og:video:type': 'video/mp4',
-        'og:video:width': '1280',
-        'og:video:height': '720',
-      }),
     }
   }
 }
