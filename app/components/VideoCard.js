@@ -9,6 +9,8 @@ import { api } from '../lib/api'
 export default function VideoCard({ video, priority = false }) {
   const [imageError, setImageError] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [videoError, setVideoError] = useState(false)
   
   // Get video number with multiple fallbacks
   const getVideoNumber = () => {
@@ -91,9 +93,26 @@ export default function VideoCard({ video, priority = false }) {
   return (
     <div className="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg group">
       <Link href={`/video/${getVideoUrlSegment()}`} onClick={handleVideoClick}>
-        <div className="relative aspect-video bg-gray-700">
-          {/* Thumbnail Image */}
-          {!imageError && video.imageUrl ? (
+        <div 
+          className="relative aspect-video bg-gray-700"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Preview Video (shown on hover) */}
+          {isHovered && video.previewImage && !videoError && (
+            <video
+              src={video.previewImage}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={() => setVideoError(true)}
+            />
+          )}
+          
+          {/* Thumbnail Image (hidden when hovering if video is available) */}
+          {(!isHovered || !video.previewImage || videoError) && !imageError && video.imageUrl ? (
             <>
               <Image
                 src={video.imageUrl}
@@ -116,10 +135,12 @@ export default function VideoCard({ video, priority = false }) {
               )}
             </>
           ) : (
-            // Fallback placeholder
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-              <Play className="w-12 h-12 text-gray-500" />
-            </div>
+            // Fallback placeholder (shown when no image or video)
+            (!isHovered || !video.previewImage || videoError) && (
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                <Play className="w-12 h-12 text-gray-500" />
+              </div>
+            )
           )}
 
           {/* Play Button Overlay */}

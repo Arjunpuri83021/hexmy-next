@@ -52,6 +52,7 @@ export async function generateMetadata({ params }) {
   const titleSlug = slugify(title)
   const canonical = `${canonicalBase}/video/${id}${titleSlug ? `-${titleSlug}` : ''}`
   const imageUrl = video?.imageUrl || `${canonicalBase}/og-image.jpg`
+  const previewVideoUrl = video?.previewImage || null
 
   // Generate comprehensive keywords
   const keywords = [
@@ -80,7 +81,14 @@ export async function generateMetadata({ params }) {
           alt: title,
         }
       ],
-      videos: video?.iframeUrl ? [
+      videos: previewVideoUrl ? [
+        {
+          url: previewVideoUrl,
+          width: 1280,
+          height: 720,
+          type: 'video/mp4',
+        }
+      ] : video?.iframeUrl ? [
         {
           url: video.iframeUrl,
           width: 1280,
@@ -89,11 +97,21 @@ export async function generateMetadata({ params }) {
       ] : undefined,
     },
     twitter: {
-      card: 'summary_large_image',
+      card: previewVideoUrl ? 'player' : 'summary_large_image',
       title,
       description,
       images: [imageUrl],
       creator: '@hexmy',
+      ...(previewVideoUrl && {
+        players: [
+          {
+            playerUrl: canonical,
+            streamUrl: previewVideoUrl,
+            width: 1280,
+            height: 720,
+          }
+        ]
+      })
     },
     other: {
       'video:duration': video?.minutes ? `${video.minutes * 60}` : undefined,
@@ -453,8 +471,8 @@ export default async function VideoDetailPage({ params, searchParams }) {
     "thumbnailUrl": video.imageUrl || '',
     "uploadDate": video.createdAt || new Date().toISOString(),
     "duration": video.minutes ? `PT${video.minutes}M` : undefined,
-    "contentUrl": video.link || '',
-    "embedUrl": video.iframeUrl || undefined,
+    "contentUrl": video.previewImage || video.link || '',
+    "embedUrl": video.iframeUrl || video.previewImage || undefined,
     "publisher": {
       "@type": "Organization",
       "name": "Hexmy",
