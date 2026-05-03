@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Play, Clock, Eye, Star } from 'lucide-react'
@@ -11,12 +11,59 @@ export default function VideoCard({ video, priority = false }) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [videoError, setVideoError] = useState(false)
+  const [isInView, setIsInView] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const videoRef = useRef(null)
+  const observerRef = useRef(null)
   
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
+  // Intersection Observer for scroll-based video preview (mobile only)
+  useEffect(() => {
+    if (!videoRef.current || !video?.previewImage) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true)
+          } else {
+            setIsInView(false)
+          }
+        })
+      },
+      {
+        threshold: 0.3, // 30% visible for mobile
+        rootMargin: '50px 0px -50px 0px', // Start loading earlier on mobile
+      }
+    )
+
+    observer.observe(videoRef.current)
+    observerRef.current = observer
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [video?.previewImage])
+
   // Get video number with multiple fallbacks
   const getVideoNumber = () => {
     return video.dynamicVideoNo || video.videoNo || null;
   }
-  
 
   // Format view count
   const formatViews = (views) => {
@@ -90,29 +137,41 @@ export default function VideoCard({ video, priority = false }) {
     }
   }
 
+  // Determine if preview video should be shown (hover for desktop, in-view for mobile)
+  const shouldShowPreviewVideo = video.previewImage && !videoError && (
+    (isMobile && isInView) || // Mobile: play when in view
+    (!isMobile && isHovered)   // Desktop: play on hover
+  )
+
   return (
-    <div className="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg group">
+    <div ref={videoRef} className="video-card bg-gray-800 rounded-lg overflow-hidden shadow-lg group">
       <Link href={`/video/${getVideoUrlSegment()}`} onClick={handleVideoClick}>
         <div 
           className="relative aspect-video bg-gray-700"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Preview Video (shown on hover) */}
-          {isHovered && video.previewImage && !videoError && (
+          {/* Preview Video (shown on hover or when in view) */}
+          {shouldShowPreviewVideo && (
             <video
               src={video.previewImage}
               autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
               className="absolute inset-0 w-full h-full object-cover"
               onError={() => setVideoError(true)}
+              style={{
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%',
+              }}
             />
           )}
           
-          {/* Thumbnail Image (hidden when hovering if video is available) */}
-          {(!isHovered || !video.previewImage || videoError) && !imageError && video.imageUrl ? (
+          {/* Thumbnail Image (hidden when preview video is playing) */}
+          {!shouldShowPreviewVideo && !imageError && video.imageUrl ? (
             <>
               <Image
                 src={video.imageUrl}
@@ -136,7 +195,7 @@ export default function VideoCard({ video, priority = false }) {
             </>
           ) : (
             // Fallback placeholder (shown when no image or video)
-            (!isHovered || !video.previewImage || videoError) && (
+            !shouldShowPreviewVideo && (
               <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
                 <Play className="w-12 h-12 text-gray-500" />
               </div>

@@ -52,7 +52,19 @@ export async function generateMetadata({ params }) {
   const titleSlug = slugify(title)
   const canonical = `${canonicalBase}/video/${id}${titleSlug ? `-${titleSlug}` : ''}`
   const imageUrl = video?.imageUrl || `${canonicalBase}/og-image.jpg`
-  const previewVideoUrl = video?.previewImage || null
+  
+  // Ensure preview video URL is absolute and HTTPS
+  let previewVideoUrl = null
+  if (video?.previewImage) {
+    previewVideoUrl = video.previewImage
+    if (!previewVideoUrl.startsWith('http')) {
+      previewVideoUrl = `${canonicalBase}${previewVideoUrl.startsWith('/') ? '' : '/'}${previewVideoUrl}`
+    }
+    // Force HTTPS for social media
+    if (previewVideoUrl.startsWith('http://')) {
+      previewVideoUrl = previewVideoUrl.replace('http://', 'https://')
+    }
+  }
 
   // Generate comprehensive keywords
   const keywords = [
@@ -71,7 +83,7 @@ export async function generateMetadata({ params }) {
       description,
       url: canonical,
       siteName: 'Hexmy',
-      type: 'video.other',
+      type: previewVideoUrl ? 'video.movie' : 'video.other',
       locale: 'en_US',
       images: [
         {
@@ -81,20 +93,19 @@ export async function generateMetadata({ params }) {
           alt: title,
         }
       ],
-      videos: previewVideoUrl ? [
-        {
+      ...(previewVideoUrl && {
+        video: {
           url: previewVideoUrl,
           width: 1280,
           height: 720,
           type: 'video/mp4',
-        }
-      ] : video?.iframeUrl ? [
-        {
-          url: video.iframeUrl,
-          width: 1280,
-          height: 720,
-        }
-      ] : undefined,
+        },
+        'video:url': previewVideoUrl,
+        'video:secure_url': previewVideoUrl.startsWith('https') ? previewVideoUrl : previewVideoUrl.replace('http', 'https'),
+        'video:type': 'video/mp4',
+        'video:width': 1280,
+        'video:height': 720,
+      }),
     },
     twitter: {
       card: previewVideoUrl ? 'player' : 'summary_large_image',
@@ -116,6 +127,13 @@ export async function generateMetadata({ params }) {
     other: {
       'video:duration': video?.minutes ? `${video.minutes * 60}` : undefined,
       'video:release_date': video?.createdAt || undefined,
+      ...(previewVideoUrl && {
+        'og:video': previewVideoUrl,
+        'og:video:secure_url': previewVideoUrl.startsWith('https') ? previewVideoUrl : previewVideoUrl.replace('http', 'https'),
+        'og:video:type': 'video/mp4',
+        'og:video:width': '1280',
+        'og:video:height': '720',
+      }),
     }
   }
 }
