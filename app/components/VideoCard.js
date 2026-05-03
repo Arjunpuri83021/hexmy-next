@@ -15,6 +15,7 @@ export default function VideoCard({ video, priority = false }) {
   const [isMobile, setIsMobile] = useState(false)
   const videoRef = useRef(null)
   const observerRef = useRef(null)
+  const videoElementRef = useRef(null)
   
   // Detect mobile screen size
   useEffect(() => {
@@ -45,8 +46,8 @@ export default function VideoCard({ video, priority = false }) {
         })
       },
       {
-        threshold: 0.3, // 30% visible for mobile
-        rootMargin: '50px 0px -50px 0px', // Start loading earlier on mobile
+        threshold: 1.0, // 100% visible for mobile
+        rootMargin: '0px', // No margin for precise 100% detection
       }
     )
 
@@ -59,6 +60,25 @@ export default function VideoCard({ video, priority = false }) {
       }
     }
   }, [video?.previewImage])
+
+  // Control video playback based on visibility and hover state
+  useEffect(() => {
+    if (!videoElementRef.current || !video?.previewImage) return
+
+    const shouldPlay = video.previewImage && !videoError && (
+      (isMobile && isInView) || // Mobile: play when in view
+      (!isMobile && isHovered)   // Desktop: play on hover
+    )
+
+    if (shouldPlay) {
+      videoElementRef.current.play().catch(e => console.log('Video play failed:', e))
+    } else {
+      videoElementRef.current.pause()
+      if (isMobile && !isInView) {
+        videoElementRef.current.currentTime = 0
+      }
+    }
+  }, [isHovered, isInView, isMobile, video?.previewImage, videoError])
 
   // Get video number with multiple fallbacks
   const getVideoNumber = () => {
@@ -151,16 +171,18 @@ export default function VideoCard({ video, priority = false }) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Preview Video (shown on hover or when in view) */}
-          {shouldShowPreviewVideo && (
+          {/* Preview Video (always rendered but visibility controlled) */}
+          {video.previewImage && !videoError && (
             <video
+              ref={videoElementRef}
               src={video.previewImage}
-              autoPlay
               muted
               loop
               playsInline
               preload="metadata"
-              className="absolute inset-0 w-full h-full object-cover"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                shouldShowPreviewVideo ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
               onError={() => setVideoError(true)}
               style={{
                 objectFit: 'cover',
@@ -171,7 +193,7 @@ export default function VideoCard({ video, priority = false }) {
           )}
           
           {/* Thumbnail Image (hidden when preview video is playing) */}
-          {!shouldShowPreviewVideo && !imageError && video.imageUrl ? (
+          {(!shouldShowPreviewVideo || !video.previewImage || videoError) && !imageError && video.imageUrl ? (
             <>
               <Image
                 src={video.imageUrl}
@@ -195,7 +217,7 @@ export default function VideoCard({ video, priority = false }) {
             </>
           ) : (
             // Fallback placeholder (shown when no image or video)
-            !shouldShowPreviewVideo && (
+            (!shouldShowPreviewVideo || !video.previewImage || videoError) && (
               <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
                 <Play className="w-12 h-12 text-gray-500" />
               </div>
