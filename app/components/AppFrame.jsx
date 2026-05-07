@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import TelegramPopup from "./TelegramPopup";
 import { useState, useEffect } from "react";
 
 export default function AppFrame({ children }) {
@@ -32,6 +33,9 @@ export default function AppFrame({ children }) {
       {!isAdmin && <Navbar />}
       <main className="flex-grow">{children}</main>
       {!isAdmin && <Footer />}
+      
+      {/* Telegram popup - only on non-admin pages */}
+      {!isAdmin && <TelegramPopup />}
 
       {/* Global scripts only for public site, not for admin */}
       {/* Step 2: Only show ads after 1 minute delay */}
