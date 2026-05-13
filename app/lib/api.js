@@ -87,4 +87,23 @@ export const api = {
   updateCustomContent: (id, data) => request(`/custom-content/${id}`, { method: 'PUT', body: data }),
   deleteCustomContent: (id) => request(`/custom-content/${id}`, { method: 'DELETE' }),
   toggleCustomContentStatus: (id) => request(`/custom-content/${id}/toggle`, { method: 'PATCH' }),
+
+  // Preview Video Upload
+  uploadPreviewVideo: async (file) => {
+    const base = getApiBase()
+    const formData = new FormData()
+    formData.append('video', file)
+
+    const res = await fetch(`${base}/preview-video/upload`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => '')
+      throw new Error(`Upload error ${res.status}: ${text}`)
+    }
+
+    return res.json()
+  },
 }

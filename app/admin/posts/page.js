@@ -12,6 +12,7 @@ export default function AdminPostsPage(){
   const [suggestedTags,setSuggestedTags]=useState([]);
   const [suggestedStars,setSuggestedStars]=useState([]);
   const [imageUrl,setImgUrl]=useState('');
+  const [previewImage,setPreviewImage]=useState('');
   const [altKeywords,setAltKeywords]=useState('');
   const [nameInput,setNameInput]=useState('');
   const [name,setname]=useState([]);
@@ -38,7 +39,7 @@ export default function AdminPostsPage(){
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    const formData={ imageUrl, altKeywords, name, tags, link, iframeUrl, titel, minutes, Category };
+    const formData={ imageUrl, previewImage, altKeywords, name, tags, link, iframeUrl, titel, minutes, Category };
     if(isUpdateMode){ setData(prev=>prev.map(it=> it._id===postId?{...it,...formData}:it)); }
     else { setData(prev=>[{ _id: String(Date.now()), ...formData },...prev]); setCurrentPage(1);} 
     closeModal(); resetForm();
@@ -115,7 +116,7 @@ export default function AdminPostsPage(){
     }catch(e){ alert('Error publishing batch: '+e.message); }
   };
 
-  const openUpdateModal=(item)=>{ setIsUpdateMode(true); setPostId(item._id); setImgUrl(item.imageUrl||''); setAltKeywords(item.altKeywords||''); setname(item.name||[]); setTags(item.tags||[]); setLink(item.link||''); setIframeUrl(item.iframeUrl||''); settitel(item.titel||''); setMinutes(item.minutes||''); setCategory(item.Category||'english'); setShowModal(true); };
+  const openUpdateModal=(item)=>{ setIsUpdateMode(true); setPostId(item._id); setImgUrl(item.imageUrl||''); setPreviewImage(item.previewImage||''); setAltKeywords(item.altKeywords||''); setname(item.name||[]); setTags(item.tags||[]); setLink(item.link||''); setIframeUrl(item.iframeUrl||''); settitel(item.titel||''); setMinutes(item.minutes||''); setCategory(item.Category||'english'); setShowModal(true); };
   const openAddModal=()=>{ resetForm(); setShowModal(true); };
   const handlePageChange=(e,page)=>{ 
     setCurrentPage(page);
@@ -126,7 +127,7 @@ export default function AdminPostsPage(){
     }catch(_){}
   };
   const handleSearchChange=(e)=>{ setSearchQuery(e.target.value); setCurrentPage(1); };
-  const resetForm=()=>{ setImgUrl(''); setAltKeywords(''); setname([]); setTags([]); setLink(''); setIframeUrl(''); settitel(''); setMinutes(''); setCategory('english'); setPostId(''); setIsUpdateMode(false); setNameInput(''); setTagInput(''); setShowSuggestions(false); setShowStarSuggestions(false); };
+  const resetForm=()=>{ setImgUrl(''); setPreviewImage(''); setAltKeywords(''); setname([]); setTags([]); setLink(''); setIframeUrl(''); settitel(''); setMinutes(''); setCategory('english'); setPostId(''); setIsUpdateMode(false); setNameInput(''); setTagInput(''); setShowSuggestions(false); setShowStarSuggestions(false); };
   const removeName=(i)=> setname(name.filter((_,idx)=> idx!==i));
   const removeTag=(i)=> setTags(tags.filter((_,idx)=> idx!==i));
   const filteredTags=suggestedTags.filter(t=> t.toLowerCase().includes(tagInput.toLowerCase()));
@@ -197,6 +198,7 @@ export default function AdminPostsPage(){
         {showModal && (<div className="admin-modal"><div className="admin-modal-content"><div className="admin-modal-header"><h3>{isUpdateMode? 'Update Post':'Add New Post'}</h3><button className="admin-modal-close" onClick={closeModal}><i className="bi bi-x-lg"></i></button></div>
           <form onSubmit={handleSubmit}><div className="admin-modal-body">
             <div className="admin-form-group"><label htmlFor="image">Image URL</label><input value={imageUrl} onChange={(e)=>setImgUrl(e.target.value)} className="form-control" type="text" id="image" required/></div>
+            <div className="admin-form-group"><label htmlFor="previewImage">Preview Video URL</label><input value={previewImage} onChange={(e)=>setPreviewImage(e.target.value)} className="form-control" type="text" id="previewImage" placeholder="Enter preview video URL (e.g., /uploads/preview-videos/video.mp4)"/><small className="text-muted">Upload videos via: POST /preview-video/upload</small></div>
             <div className="admin-form-group"><label>Image Alt Keywords</label><input value={altKeywords} onChange={(e)=>setAltKeywords(e.target.value)} className="form-control" type="text" placeholder="SEO keywords for image"/></div>
             <div className="admin-form-group"><label htmlFor="name">Star Names</label><div className="admin-tags-container">{name.map((n,idx)=>(<div className="admin-tag" key={idx}>{n}<button type="button" onClick={()=>removeName(idx)} className="admin-tag-remove"><i className="bi bi-x"></i></button></div>))}</div>
               <div className="admin-input-with-btn position-relative"><input value={nameInput} onChange={(e)=>{setNameInput(e.target.value); setShowStarSuggestions(e.target.value.length>0);}} className="form-control" type="text" placeholder="Enter star name"/>

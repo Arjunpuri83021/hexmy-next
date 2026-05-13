@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, Menu, X, Home, Star, Film, TrendingUp, Clock, Heart, Flame } from 'lucide-react'
+import { Search, Menu, X, Home, Star, Film, TrendingUp, Clock, Heart, Flame, PlayCircle } from 'lucide-react'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,6 +20,7 @@ export default function Navbar() {
     { name: 'Stars', href: '/pornstars', icon: Star },
     { name: 'Indian', href: '/indian', icon: Film },
     { name: 'Hijabi', href: '/muslim', icon: Film },
+    { name: 'Viral Reels', href: '/reels', icon: PlayCircle },
     { name: 'New Videos', href: '/new-content', icon: Clock },
     { name: 'Popular', href: '/most-liked', icon: TrendingUp },
     { name: 'Categories', href: '/tags', icon: Film },
