@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Play, Eye, Clock, Heart, MessageCircle, Share2, Volume2, Loader2, X, Send } from 'lucide-react'
+import { Play, Eye, Clock, Heart, MessageCircle, Share2, Volume2, Loader2, X, Send, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 
 export default function ReelsPage() {
   const [reels, setReels] = useState([])
@@ -412,27 +413,8 @@ export default function ReelsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="sticky top-0 bg-black/90 backdrop-blur-md z-40 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Viral Reels
-              </h1>
-              <p className="text-gray-400 text-sm mt-1">Trending videos from around web</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-400">
-                {reels.length} reels loaded
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Reels Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Reels Container */}
+      <div>
         {reels.length === 0 && !loading ? (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">No reels available at moment.</p>
@@ -440,70 +422,79 @@ export default function ReelsPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {/* Mobile: Full-screen vertical scroll, Desktop: Grid */}
+            <div className="md:max-w-7xl md:mx-auto md:px-4 md:py-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 md:gap-6">
               {reels.map((reel, index) => (
                 <div key={reel._id} className="relative group" data-reel-id={reel._id}>
                   {/* Video Container */}
                   <div className="relative aspect-[9/16] bg-gray-900 rounded-xl overflow-hidden shadow-2xl">
                     {/* Video Element */}
-                    <div className="absolute inset-0">
+                    <div className="absolute inset-0 z-0">
                       {reel.previewImage ? (
-                        <>
-                          <video
-                            ref={(el) => { videoRefs.current[reel._id] = el }}
-                            src={reel.previewImage}
-                            className="w-full h-full object-cover"
-                            controls={false}
-                            loop
-                            muted
-                            playsInline
-                            onClick={(e) => handleVideoClick(reel._id, e)}
-                            style={{ display: 'block' }}
-                          />
-                          
-                                                    
-                          {/* Mute/Unmute Button - only show when playing */}
-                          {playingReel === reel._id && (
-                            <button
-                              onClick={(e) => toggleMute(reel._id, e)}
-                              className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-2 hover:bg-black/70 transition-colors z-10"
-                            >
-                              <Volume2 className="w-4 h-4 text-white" />
-                            </button>
-                          )}
-                          
-                          {/* Instagram-style Action Buttons - Right Side */}
-                          <div className="absolute bottom-4 right-4 flex flex-col space-y-4 z-10">
-                            <button 
-                              onClick={(e) => handleLike(reel._id, e)}
-                              className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
-                            >
-                              <div className={`bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors ${likedReels.has(reel._id) ? 'bg-red-500/30' : ''}`}>
-                                <Heart className={`w-5 h-5 ${likedReels.has(reel._id) ? 'fill-red-500 text-red-500' : ''}`} />
-                              </div>
-                              <span className="text-xs">{formatLikes(reel.likes || 0)}</span>
-                            </button>
-                            <button 
-                              onClick={(e) => handleComment(reel._id, e)}
-                              className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
-                            >
-                              <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors">
-                                <MessageCircle className="w-5 h-5" />
-                              </div>
-                              <span className="text-xs">{reel.commentCount || 0}</span>
-                            </button>
-                            <button 
-                              onClick={(e) => handleShare(reel._id, e)}
-                              className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
-                            >
-                              <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors">
-                                <Share2 className="w-5 h-5" />
-                              </div>
-                              <span className="text-xs">Share</span>
-                            </button>
-                          </div>
-                        </>
+                        <video
+                          ref={(el) => { videoRefs.current[reel._id] = el }}
+                          src={reel.previewImage}
+                          className="w-full h-full object-cover"
+                          controls={false}
+                          loop
+                          muted
+                          playsInline
+                          onClick={(e) => handleVideoClick(reel._id, e)}
+                          style={{ display: 'block' }}
+                        />
                       ) : null}
+                    </div>
+
+                    {/* Mute/Unmute Button - only show when playing */}
+                    {playingReel === reel._id && (
+                      <button
+                        onClick={(e) => toggleMute(reel._id, e)}
+                        className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-3 hover:bg-black/70 transition-colors z-10 md:p-2"
+                      >
+                        <Volume2 className="w-6 h-6 text-white md:w-4 md:h-4" />
+                      </button>
+                    )}
+
+                    {/* Instagram-style Action Buttons - Right Side */}
+                    <div className="absolute bottom-4 right-4 flex flex-col space-y-4 z-20">
+                      <button
+                        onClick={(e) => handleLike(reel._id, e)}
+                        className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
+                      >
+                        <div className={`bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors ${likedReels.has(reel._id) ? 'bg-red-500/30' : ''}`}>
+                          <Heart className={`w-5 h-5 ${likedReels.has(reel._id) ? 'fill-red-500 text-red-500' : ''}`} />
+                        </div>
+                        <span className="text-xs">{formatLikes(reel.likes || 0)}</span>
+                      </button>
+                      <button
+                        onClick={(e) => handleComment(reel._id, e)}
+                        className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
+                      >
+                        <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors">
+                          <MessageCircle className="w-5 h-5" />
+                        </div>
+                        <span className="text-xs">{reel.commentCount || 0}</span>
+                      </button>
+                      <button
+                        onClick={(e) => handleShare(reel._id, e)}
+                        className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
+                      >
+                        <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 hover:bg-white/30 transition-colors">
+                          <Share2 className="w-5 h-5" />
+                        </div>
+                        <span className="text-xs">Share</span>
+                      </button>
+                      <Link
+                        href={`/video/${reel._id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex flex-col items-center space-y-1 text-white hover:scale-110 transition-transform"
+                      >
+                        <div className="bg-gradient-to-r from-purple-500 to-pink-500 backdrop-blur-sm rounded-full p-2 hover:from-purple-600 hover:to-pink-600 transition-colors">
+                          <ExternalLink className="w-5 h-5" />
+                        </div>
+                        <span className="text-xs font-medium">Watch Full</span>
+                      </Link>
                     </div>
 
                     {/* Overlay Info - Always Visible */}
@@ -512,7 +503,7 @@ export default function ReelsPage() {
                         <h3 className="text-white font-semibold text-sm mb-2 line-clamp-2">
                           {reel.titel || 'Untitled Reel'}
                         </h3>
-                        
+
                         {/* Video Stats */}
                         <div className="flex items-center justify-between text-white/80 text-xs">
                           <div className="flex items-center space-x-3">
@@ -535,7 +526,7 @@ export default function ReelsPage() {
                         {reel.tags && reel.tags.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2">
                             {reel.tags.slice(0, 3).map((tag, tagIndex) => (
-                              <span 
+                              <span
                                 key={tagIndex}
                                 className="px-2 py-1 bg-purple-500/30 text-purple-300 text-xs rounded-full"
                               >
@@ -665,10 +656,10 @@ export default function ReelsPage() {
                 <p className="text-gray-600 text-sm mt-1">No more reels to load</p>
               </div>
             )}
+            </div>
           </>
         )}
       </div>
-
-          </div>
+    </div>
   )
 }
