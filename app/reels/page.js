@@ -18,12 +18,14 @@ export default function ReelsPage() {
   const [comments, setComments] = useState({})
   const [commentForm, setCommentForm] = useState({ name: '', comment: '', commentType: 'normal' })
   const [submittingComment, setSubmittingComment] = useState(false)
+  const [videoLoadingStates, setVideoLoadingStates] = useState({})
+  const [videoErrors, setVideoErrors] = useState({})
   const videoRefs = useRef({})
   const loaderRef = useRef(null)
 
   useEffect(() => {
     fetchReels()
-    
+
     // Load liked reels from localStorage
     const savedLikedReels = localStorage.getItem('likedReels')
     if (savedLikedReels) {
@@ -31,17 +33,30 @@ export default function ReelsPage() {
     }
   }, [])
 
-  // Auto-play first video when reels are loaded
+  // Auto-play first video when reels are loaded (using onCanPlay instead of timeout)
   useEffect(() => {
     if (reels.length > 0 && !playingReel) {
       const firstReelId = reels[0]._id
-      setPlayingReel(firstReelId)
-      setTimeout(() => {
-        const firstVideo = videoRefs.current[firstReelId]
-        if (firstVideo) {
+      const firstVideo = videoRefs.current[firstReelId]
+      if (firstVideo) {
+        // Set playing state when video can play
+        const handleCanPlay = () => {
+          setPlayingReel(firstReelId)
           firstVideo.play().catch(err => console.log('Autoplay failed:', err))
+          firstVideo.removeEventListener('canplay', handleCanPlay)
         }
-      }, 1000)
+
+        // If video is already ready, play immediately
+        if (firstVideo.readyState >= 3) { // HAVE_FUTURE_DATA
+          handleCanPlay()
+        } else {
+          firstVideo.addEventListener('canplay', handleCanPlay)
+        }
+
+        return () => {
+          firstVideo.removeEventListener('canplay', handleCanPlay)
+        }
+      }
     }
   }, [reels])
 
@@ -104,28 +119,47 @@ export default function ReelsPage() {
       }
 
       const API_BASE = process.env.NEXT_PUBLIC_API_URL || window.location.origin
-      const response = await fetch(`${API_BASE}/reels?page=${page}&limit=12`)
-      
+
+      // Add timeout to fetch
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 15000) // 15 second timeout
+
+      const response = await fetch(`${API_BASE}/reels?page=${page}&limit=12`, {
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
+
       if (!response.ok) {
         throw new Error('Failed to fetch reels')
       }
-      
+
       const data = await response.json()
-      
+
       if (data.success) {
         if (isLoadMore) {
           setReels(prev => [...prev, ...data.reels])
         } else {
           setReels(data.reels)
         }
-        
+
+        // Initialize video loading states
+        const loadingStates = {}
+        const errors = {}
+        data.reels.forEach(reel => {
+          loadingStates[reel._id] = true
+          errors[reel._id] = null
+        })
+        setVideoLoadingStates(prev => ({ ...prev, ...loadingStates }))
+        setVideoErrors(prev => ({ ...prev, ...errors }))
+
         // Initialize comments state with database comment counts
         const commentsData = {}
         data.reels.forEach(reel => {
           commentsData[reel._id] = reel.comments || []
         })
         setComments(prev => ({ ...prev, ...commentsData }))
-        
+
         // Check if there are more pages
         const totalPages = data.pagination.total
         setHasMore(page < totalPages)
@@ -134,7 +168,11 @@ export default function ReelsPage() {
         throw new Error(data.message || 'Failed to fetch reels')
       }
     } catch (err) {
-      setError(err.message)
+      if (err.name === 'AbortError') {
+        setError('Request timed out. Please try again.')
+      } else {
+        setError(err.message)
+      }
     } finally {
       setLoading(false)
       setLoadingMore(false)
@@ -164,7 +202,7 @@ export default function ReelsPage() {
     if (video) {
       // Prevent event bubbling
       if (event) event.stopPropagation()
-      
+
       // Simple toggle logic
       if (video.paused) {
         // Pause all other videos first
@@ -182,6 +220,19 @@ export default function ReelsPage() {
         setPlayingReel(null)
       }
     }
+  }
+
+  // Handle video load events
+  const handleVideoLoad = (reelId) => {
+    setVideoLoadingStates(prev => ({ ...prev, [reelId]: false }))
+    setVideoErrors(prev => ({ ...prev, [reelId]: null }))
+  }
+
+  // Handle video error
+  const handleVideoError = (reelId) => {
+    setVideoLoadingStates(prev => ({ ...prev, [reelId]: false }))
+    setVideoErrors(prev => ({ ...prev, [reelId]: 'Failed to load video' }))
+    console.error(`Video failed to load: ${reelId}`)
   }
 
   const toggleMute = (reelId, e) => {
@@ -432,17 +483,37 @@ export default function ReelsPage() {
                     {/* Video Element */}
                     <div className="absolute inset-0 z-0">
                       {reel.previewImage ? (
-                        <video
-                          ref={(el) => { videoRefs.current[reel._id] = el }}
-                          src={reel.previewImage}
-                          className="w-full h-full object-cover"
-                          controls={false}
-                          loop
-                          muted
-                          playsInline
-                          onClick={(e) => handleVideoClick(reel._id, e)}
-                          style={{ display: 'block' }}
-                        />
+                        <>
+                          <video
+                            ref={(el) => { videoRefs.current[reel._id] = el }}
+                            src={reel.previewImage}
+                            className="w-full h-full object-cover"
+                            controls={false}
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            onCanPlay={() => handleVideoLoad(reel._id)}
+                            onError={() => handleVideoError(reel._id)}
+                            onClick={(e) => handleVideoClick(reel._id, e)}
+                            style={{ display: 'block' }}
+                          />
+                          {/* Loading indicator */}
+                          {videoLoadingStates[reel._id] && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                              <Loader2 className="w-8 h-8 text-white animate-spin" />
+                            </div>
+                          )}
+                          {/* Error indicator */}
+                          {videoErrors[reel._id] && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/70">
+                              <div className="text-center text-white">
+                                <p className="text-sm">Failed to load video</p>
+                                <p className="text-xs text-gray-400 mt-1">Try refreshing the page</p>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       ) : null}
                     </div>
 
