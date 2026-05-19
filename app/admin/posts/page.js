@@ -86,7 +86,8 @@ export default function AdminPostsPage(){
       const p = parseInt(urlParams.get('page'));
       if(p && p>0){ setCurrentPage(p); }
     }catch(_){}
-    fetchPostData(); fetchSuggestedTags(); fetchSuggestedStars(); fetchPublishStats();
+    fetchPostData(); fetchPublishStats();
+    // Lazy load suggestions only when modal opens
   },[]);
 
   const handleDelete=async(id)=>{ if(!confirm('Are you sure you want to delete this post?')) return; try{ const res=await fetch(`${apiUrl}/deletepost/${id}`,{method:'DELETE'}); if(!res.ok) throw new Error('Network response was not ok'); setData(prev=>prev.filter(i=>i._id!==id)); await fetchPostData(currentPage,searchQuery); await fetchPublishStats();}catch(e){ alert('Error deleting post: '+e.message); fetchPostData(currentPage,searchQuery);} };
@@ -116,8 +117,8 @@ export default function AdminPostsPage(){
     }catch(e){ alert('Error publishing batch: '+e.message); }
   };
 
-  const openUpdateModal=(item)=>{ setIsUpdateMode(true); setPostId(item._id); setImgUrl(item.imageUrl||''); setPreviewImage(item.previewImage||''); setAltKeywords(item.altKeywords||''); setname(item.name||[]); setTags(item.tags||[]); setLink(item.link||''); setIframeUrl(item.iframeUrl||''); settitel(item.titel||''); setMinutes(item.minutes||''); setCategory(item.Category||'english'); setShowModal(true); };
-  const openAddModal=()=>{ resetForm(); setShowModal(true); };
+  const openUpdateModal=(item)=>{ setIsUpdateMode(true); setPostId(item._id); setImgUrl(item.imageUrl||''); setPreviewImage(item.previewImage||''); setAltKeywords(item.altKeywords||''); setname(item.name||[]); setTags(item.tags||[]); setLink(item.link||''); setIframeUrl(item.iframeUrl||''); settitel(item.titel||''); setMinutes(item.minutes||''); setCategory(item.Category||'english'); setShowModal(true); fetchSuggestedTags(); fetchSuggestedStars(); };
+  const openAddModal=()=>{ resetForm(); setShowModal(true); fetchSuggestedTags(); fetchSuggestedStars(); };
   const handlePageChange=(e,page)=>{ 
     setCurrentPage(page);
     try{
