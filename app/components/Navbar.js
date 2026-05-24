@@ -24,6 +24,7 @@ export default function Navbar() {
     { name: 'New Videos', href: '/new-content', icon: Clock },
     { name: 'Popular', href: '/most-liked', icon: TrendingUp },
     { name: 'Categories', href: '/tags', icon: Film },
+    { name: 'hotarb Porn', href: 'https://hotarb.com', icon: Film, external: true },
   ]
 
   const categories = [
@@ -153,6 +154,20 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {navigationItems.map((item) => {
               const Icon = item.icon
+              if (item.external) {
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-1 hover:text-cyan-400 transition-colors duration-200"
+                  >
+                    <Icon size={16} />
+                    <span>{item.name}</span>
+                  </a>
+                )
+              }
               return (
                 <Link
                   key={item.name}
@@ -237,6 +252,21 @@ export default function Navbar() {
             <div className="space-y-2">
               {navigationItems.map((item) => {
                 const Icon = item.icon
+                if (item.external) {
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                    >
+                      <Icon size={20} />
+                      <span>{item.name}</span>
+                    </a>
+                  )
+                }
                 return (
                   <Link
                     key={item.name}
