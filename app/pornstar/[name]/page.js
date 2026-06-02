@@ -13,18 +13,21 @@ export async function generateMetadata({ params, searchParams }) {
   const pagePath = `/pornstar/${params.name}`
   const customSeo = await generateSeoMetadata(pagePath, null)
   
-  // If custom SEO exists, use it (but keep pagination logic for page > 1)
+  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
+  const pornstarCanonical = `${canonicalBase}/pornstar/${params.name}`
+
   if (customSeo && page === 1) {
-    return customSeo
+    return {
+      ...customSeo,
+      alternates: { canonical: pornstarCanonical },
+      openGraph: { ...customSeo.openGraph, url: pornstarCanonical },
+    }
   }
-  
-  // Otherwise, use default dynamic meta (original logic)
+
   const displayName = name.replace(/-/g, ' ')
   const title = `hexmy - ${displayName} xvids porno missax trisha paytas porn`
   const description = `sexy movie super movie ${displayName}. chinese family sex huge tits Porn Videos big natural boobs download vporn sex videos`
-
-  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
-  const canonical = `${canonicalBase}/pornstar/${params.name}`
+  const canonical = pornstarCanonical
 
   return {
     title,

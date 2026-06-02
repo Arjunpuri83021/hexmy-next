@@ -13,9 +13,19 @@ export async function generateMetadata({ params, searchParams }) {
   const pagePath = `/tag/${params.tag}`
   const customSeo = await generateSeoMetadata(pagePath, null)
   
+  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
+  const tagCanonical =
+    page > 1
+      ? `${canonicalBase}/tag/${params.tag}/${page}`
+      : `${canonicalBase}/tag/${params.tag}`
+
   // If custom SEO exists, use it (but keep pagination logic for page > 1)
   if (customSeo && page === 1) {
-    return customSeo
+    return {
+      ...customSeo,
+      alternates: { canonical: tagCanonical },
+      openGraph: { ...customSeo.openGraph, url: tagCanonical },
+    }
   }
   
   // Otherwise, use default dynamic meta (original logic)
@@ -40,10 +50,7 @@ export async function generateMetadata({ params, searchParams }) {
     ? `Browse page ${page}${totalPages ? ` of ${totalPages}` : ''} for the best ${titleTag} porn videos in HD on Hexmy. Free streaming, updated daily.${totalRecords ? ` ${totalRecords}+ videos available.` : ''}`
     : `Watch the best ${titleTag} porn videos in HD on Hexmy. Free streaming, updated daily.${totalRecords ? ` ${totalRecords}+ videos available.` : ''}`
 
-  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
-  const canonical = page > 1
-    ? `${canonicalBase}/tag/${params.tag}/${page}`
-    : `${canonicalBase}/tag/${params.tag}`
+  const canonical = tagCanonical
 
   return {
     title,

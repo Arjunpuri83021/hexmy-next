@@ -144,18 +144,25 @@ export async function generateMetadata({ params, searchParams }) {
   const pagePath = `/category/${slug}`
   const customSeo = await generateSeoMetadata(pagePath, null)
   
-  // If custom SEO exists, use it (but keep pagination logic for page > 1)
+  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
+  const categoryCanonical =
+    page > 1
+      ? `${canonicalBase}/category/${slug}/${page}`
+      : `${canonicalBase}/category/${slug}`
+
   if (customSeo && page === 1) {
-    return customSeo
+    return {
+      ...customSeo,
+      alternates: { canonical: categoryCanonical },
+      openGraph: { ...customSeo.openGraph, url: categoryCanonical },
+    }
   }
-  
-  // Otherwise, use default dynamic meta (original logic)
+
   const titleBase = categoryTitles[slug] || slug.replace(/-/g, ' ')
   const meta = categoryMeta[slug]
   const title = meta ? meta.title(page) : (page > 1 ? `${titleBase} Videos - Page ${page}` : `${titleBase} Videos`)
   const description = meta ? meta.desc : `Watch ${titleBase} videos on Hexmy${page > 1 ? ` - Page ${page}` : ''}.`
-  const canonicalBase = process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com'
-  const canonical = page > 1 ? `${canonicalBase}/category/${slug}/${page}` : `${canonicalBase}/category/${slug}`
+  const canonical = categoryCanonical
   return {
     title,
     description,

@@ -40,45 +40,60 @@ export async function fetchSeoMeta(pagePath) {
  */
 export async function generateSeoMetadata(pagePath, defaultMeta = {}) {
   const seoMeta = await fetchSeoMeta(pagePath);
-  
+  const normalizedPath = pagePath.startsWith('/') ? pagePath : `/${pagePath}`;
+
   if (!seoMeta) {
-    // Return default metadata if no custom SEO found
     return defaultMeta;
   }
-  
-  // Build metadata object
+
   const metadata = {
     title: seoMeta.metaTitle,
     description: seoMeta.metaDescription,
+    // Override root layout canonical ('/') — admin SEO must keep the page URL
+    alternates: { canonical: normalizedPath },
   };
-  
-  // Add keywords if available
+
   if (seoMeta.metaKeywords) {
     metadata.keywords = seoMeta.metaKeywords;
   }
-  
-  // Add Open Graph data
+
   metadata.openGraph = {
     title: seoMeta.ogTitle || seoMeta.metaTitle,
     description: seoMeta.ogDescription || seoMeta.metaDescription,
+    url: normalizedPath,
   };
-  
+
   if (seoMeta.ogImage) {
     metadata.openGraph.images = [seoMeta.ogImage];
   }
-  
-  // Add Twitter Card data
+
   metadata.twitter = {
     card: 'summary_large_image',
     title: seoMeta.ogTitle || seoMeta.metaTitle,
     description: seoMeta.ogDescription || seoMeta.metaDescription,
   };
-  
+
   if (seoMeta.ogImage) {
     metadata.twitter.images = [seoMeta.ogImage];
   }
-  
-  return metadata;
+
+  return {
+    ...defaultMeta,
+    ...metadata,
+    alternates: {
+      ...defaultMeta?.alternates,
+      canonical: normalizedPath,
+    },
+    openGraph: {
+      ...defaultMeta?.openGraph,
+      ...metadata.openGraph,
+      url: normalizedPath,
+    },
+    twitter: {
+      ...defaultMeta?.twitter,
+      ...metadata.twitter,
+    },
+  };
 }
 
 /**
