@@ -4,15 +4,42 @@ import { generateSeoMetadata } from '../utils/seoHelper'
 
 export const revalidate = 300
 
-export async function generateMetadata() {
+export async function generateMetadata({ searchParams }) {
+  const letter = searchParams?.letter
+  const q = searchParams?.q
   const customSeo = await generateSeoMetadata('/tags', null)
-  if (customSeo) return customSeo
   
-  return {
+  const seoMeta = customSeo || {
     title: 'Best All Porn Tags - Browse by Category | Hexmy',
     description: 'Browse all porn video tags and categories on Hexmy. Find your favorite adult content by tag - organized alphabetically for easy navigation.',
     alternates: { canonical: '/tags' },
   }
+
+  if (customSeo) {
+    // If custom SEO exists, we preserve it but apply robots noindex if dynamic filters are active
+    if (letter || q) {
+      return {
+        ...customSeo,
+        robots: {
+          index: false,
+          follow: true
+        }
+      }
+    }
+    return customSeo
+  }
+
+  if (letter || q) {
+    return {
+      ...seoMeta,
+      robots: {
+        index: false,
+        follow: true
+      }
+    }
+  }
+
+  return seoMeta
 }
 
 const LETTERS = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')]

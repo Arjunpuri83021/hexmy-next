@@ -6,15 +6,28 @@ import { generateSeoMetadata } from '../utils/seoHelper'
 
 export const revalidate = 60
 
-export async function generateMetadata() {
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
+  const letter = searchParams?.letter
   const customSeo = await generateSeoMetadata('/pornstars', null)
-  if (customSeo) return customSeo
   
-  return {
+  const seoMeta = customSeo || {
     title: 'Hexmy Adult Actress 3Pornstar 4K Pornstar Black Pornstars | Hexmy',
     description: 'A list of top-rated adult actresses and pornstars, including black pornstars and 4K-rated performers.',
     alternates: { canonical: '/pornstars' },
   }
+
+  if (page > 1 || letter) {
+    return {
+      ...seoMeta,
+      robots: {
+        index: false,
+        follow: true
+      }
+    }
+  }
+
+  return seoMeta
 }
 
 function toSlug(s) {

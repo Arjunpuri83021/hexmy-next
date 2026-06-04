@@ -5,10 +5,22 @@ import Pagination from '../components/Pagination'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Hexmy bad wap wwwxxx xvedeo sexv icegay sex sister tiktits |Hexmy',
-  description: 'xmoviesforyou aunty sex wwwxxx sex sister aunty sexy video bad wap beeg hindi badwap badwap com sexv tiktits boobs kiss boobs pressing borwap boudi sex | Hexmy',
-  alternates: { canonical: '/most-liked' },
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
+  const meta = {
+    title: 'Hexmy bad wap wwwxxx xvedeo sexv icegay sex sister tiktits |Hexmy',
+    description: 'xmoviesforyou aunty sex wwwxxx sex sister aunty sexy video bad wap beeg hindi badwap badwap com sexv tiktits boobs kiss boobs pressing borwap boudi sex | Hexmy',
+    alternates: { canonical: '/most-liked' },
+  }
+
+  if (page > 1) {
+    meta.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return meta
 }
 
 // Generate unique content from videos and meta keywords

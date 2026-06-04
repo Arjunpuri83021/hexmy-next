@@ -23,9 +23,10 @@ function slugify(str = '') {
     .replace(/[^a-z0-9-]/g, '')
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params, searchParams }) {
   const raw = params.id
   const id = extractMongoId(raw)
+  const page = Number(searchParams?.page || 1)
   let video
   try {
     video = await api.getVideoById(id)
@@ -73,7 +74,7 @@ export async function generateMetadata({ params }) {
     'hexmy', 'premium video', 'adult entertainment'
   ].filter(Boolean).join(', ')
 
-  return {
+  const result = {
     title,
     description,
     keywords,
@@ -129,6 +130,15 @@ export async function generateMetadata({ params }) {
       'video:release_date': video?.createdAt || undefined,
     }
   }
+
+  if (page > 1) {
+    result.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return result
 }
 
 export default async function VideoDetailPage({ params, searchParams }) {

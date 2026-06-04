@@ -32,7 +32,7 @@ export async function generateMetadata({ searchParams }) {
     ? `${canonicalBase}/search?q=${encodeURIComponent(q)}${page > 1 ? `&page=${page}` : ''}`
     : `${canonicalBase}/search`
 
-  return {
+  const result = {
     title,
     description,
     alternates: { canonical },
@@ -44,6 +44,15 @@ export async function generateMetadata({ searchParams }) {
       type: 'website',
     },
   }
+
+  if (page > 1) {
+    result.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return result
 }
 
 export default async function SearchPage({ searchParams }) {

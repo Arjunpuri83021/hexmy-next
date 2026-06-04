@@ -138,7 +138,7 @@ const categoryMeta = {
 
 export async function generateMetadata({ params, searchParams }) {
   const slug = params.slug
-  const page = Number(searchParams?.page || 1)
+  const page = Number(params.page || searchParams?.page || 1)
   
   // Try to fetch custom SEO meta from admin panel
   const pagePath = `/category/${slug}`
@@ -163,11 +163,21 @@ export async function generateMetadata({ params, searchParams }) {
   const title = meta ? meta.title(page) : (page > 1 ? `${titleBase} Videos - Page ${page}` : `${titleBase} Videos`)
   const description = meta ? meta.desc : `Watch ${titleBase} videos on Hexmy${page > 1 ? ` - Page ${page}` : ''}.`
   const canonical = categoryCanonical
-  return {
+
+  const result = {
     title,
     description,
     alternates: { canonical },
   }
+
+  if (page > 1) {
+    result.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return result
 }
 
 // Generate unique static content for each category

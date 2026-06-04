@@ -7,7 +7,7 @@ export const revalidate = 60
 
 export async function generateMetadata({ params, searchParams }) {
   const name = decodeURIComponent(params.name)
-  const page = Number(searchParams?.page || 1)
+  const page = Number(params.page || searchParams?.page || 1)
   
   // Try to fetch custom SEO meta from admin panel
   const pagePath = `/pornstar/${params.name}`
@@ -29,7 +29,7 @@ export async function generateMetadata({ params, searchParams }) {
   const description = `sexy movie super movie ${displayName}. chinese family sex huge tits Porn Videos big natural boobs download vporn sex videos`
   const canonical = pornstarCanonical
 
-  return {
+  const result = {
     title,
     description,
     alternates: { canonical },
@@ -40,6 +40,15 @@ export async function generateMetadata({ params, searchParams }) {
       type: 'profile',
     },
   }
+
+  if (page > 1) {
+    result.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return result
 }
 
 async function getData(name, page) {

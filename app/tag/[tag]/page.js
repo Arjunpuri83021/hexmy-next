@@ -6,7 +6,7 @@ import { generateSeoMetadata } from '../../utils/seoHelper'
 
 export async function generateMetadata({ params, searchParams }) {
   const tag = decodeURIComponent(params.tag)
-  const page = Number(searchParams?.page || 1)
+  const page = Number(params.page || searchParams?.page || 1)
   const titleTag = tag.replace(/-/g, ' ')
   
   // Try to fetch custom SEO meta from admin panel
@@ -52,7 +52,7 @@ export async function generateMetadata({ params, searchParams }) {
 
   const canonical = tagCanonical
 
-  return {
+  const result = {
     title,
     description,
     alternates: { canonical },
@@ -61,7 +61,7 @@ export async function generateMetadata({ params, searchParams }) {
       'hexmy', 'free porn', 'hd porn videos'
     ],
     robots: {
-      index: true,
+      index: page === 1,
       follow: true,
       maxImagePreview: 'large',
       maxSnippet: -1,
@@ -81,6 +81,15 @@ export async function generateMetadata({ params, searchParams }) {
       images: ogImage ? [ogImage] : undefined,
     },
   }
+
+  if (page > 1) {
+    result.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return result
 }
 
 async function getData(tag, page) {

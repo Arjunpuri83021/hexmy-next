@@ -4,10 +4,22 @@ import Pagination from '../components/Pagination'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Hexmy scout69 porndish hitbdsm pornwild tubsexer pornhits pornhut | Hexmy',
-  description: 'pornmz pornwild hitbdsm freesexyindians milf300 sex18 desi49 wwwxxx xvedeo sex sister freeomovie 3gp king aunty sex adelt movies bf full hd bigfucktv | Hexmy',
-  alternates: { canonical: '/top-videos' },
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
+  const meta = {
+    title: 'Hexmy scout69 porndish hitbdsm pornwild tubsexer pornhits pornhut | Hexmy',
+    description: 'pornmz pornwild hitbdsm freesexyindians milf300 sex18 desi49 wwwxxx xvedeo sex sister freeomovie 3gp king aunty sex adelt movies bf full hd bigfucktv | Hexmy',
+    alternates: { canonical: '/top-videos' },
+  }
+
+  if (page > 1) {
+    meta.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return meta
 }
 
 // Generate unique content from videos and meta keywords

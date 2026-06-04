@@ -26,10 +26,22 @@ async function getCustomContent() {
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Hijabi Videos',
-  description: 'Watch Hijabi videos on Hexmy with high-quality streaming.',
-  alternates: { canonical: '/hijabi' },
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
+  const meta = {
+    title: 'Hijabi Videos',
+    description: 'Watch Hijabi videos on Hexmy with high-quality streaming.',
+    alternates: { canonical: '/hijabi' },
+  }
+
+  if (page > 1) {
+    meta.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return meta
 }
 
 // Generate unique content from videos

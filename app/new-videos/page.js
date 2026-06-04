@@ -5,15 +5,27 @@ import { generateSeoMetadata } from '../utils/seoHelper'
 
 export const revalidate = 60
 
-export async function generateMetadata() {
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
   const customSeo = await generateSeoMetadata('/new-videos', null)
-  if (customSeo) return customSeo
   
-  return {
+  const seoMeta = customSeo || {
     title: 'New Videos',
     description: 'Watch the latest new videos on Hexmy with high-quality streaming.',
     alternates: { canonical: '/new-videos' },
   }
+
+  if (page > 1) {
+    return {
+      ...seoMeta,
+      robots: {
+        index: false,
+        follow: true
+      }
+    }
+  }
+
+  return seoMeta
 }
 
 // Generate unique content from videos

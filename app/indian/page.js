@@ -26,10 +26,22 @@ async function getCustomContent() {
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Hexmy Desi49 SxyPrn & BF Sex Videos | IndianGaySite & Hexmy on Hexmy',
-  description: 'desi 52 com desi 49 com dehati sex dasi sex blueflim boyfriendtv com bollywood sex bf sexy indiangaysite sxyprn bf hindi video bf hindi movie banglaxx | Hexmy',
-  alternates: { canonical: '/indian' },
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
+  const meta = {
+    title: 'Hexmy Desi49 SxyPrn & BF Sex Videos | IndianGaySite & Hexmy on Hexmy',
+    description: 'desi 52 com desi 49 com dehati sex dasi sex blueflim boyfriendtv com bollywood sex bf sexy indiangaysite sxyprn bf hindi video bf hindi movie banglaxx | Hexmy',
+    alternates: { canonical: '/indian' },
+  }
+
+  if (page > 1) {
+    meta.robots = {
+      index: false,
+      follow: true
+    }
+  }
+
+  return meta
 }
 
 // Generate unique content from videos and meta keywords

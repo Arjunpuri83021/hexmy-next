@@ -18,7 +18,6 @@ export async function GET() {
     '/top-videos',
     '/most-liked',
     '/new-content',
-    '/search',
     '/indian',
     '/hijabi',
     '/muslim',

@@ -7,12 +7,23 @@ import { generateSeoMetadata } from './utils/seoHelper'
 export const revalidate = 60
 
 // Generate metadata dynamically from SEO Meta or use defaults
-export async function generateMetadata() {
+export async function generateMetadata({ searchParams }) {
+  const page = Number(searchParams?.page || 1)
   const seoMeta = await generateSeoMetadata('/', {
     title: 'Hexmy Free XXXHD Adult Content Videos And Free Porn Videos',
     description: 'fry99 hqpornee freeomovie 3gp king adelt movies auntymaza badwap com bf full hd bf hd video bfxxx bigfucktv xxxhd spanbank borwap com pornve wowuncut| Hexmy',
     alternates: { canonical: '/' },
   });
+  
+  if (page > 1) {
+    return {
+      ...seoMeta,
+      robots: {
+        index: false,
+        follow: true
+      }
+    }
+  }
   
   return seoMeta;
 }
