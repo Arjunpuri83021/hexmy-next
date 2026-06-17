@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { Home, PlayCircle } from 'lucide-react'
 
 export default function TabBar() {
@@ -106,26 +107,37 @@ export default function TabBar() {
       onTouchEnd={onTouchEnd}
     >
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-center space-x-2 py-3">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            const isActive = activeTab === tab.id
+        <div className="flex flex-col items-center justify-center py-2">
+          {/* Tabs row: Home, Reels */}
+          <div className="flex items-center justify-center space-x-2 pb-1.5">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              const isActive = activeTab === tab.id
 
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabClick(tab.id, tab.href)}
-                className={`flex items-center space-x-2 px-6 py-2 rounded-full transition-all duration-300 relative ${
-                  isActive
-                    ? 'bg-white text-black font-black'
-                    : 'text-white bg-transparent font-bold'
-                }`}
-              >
-                <Icon size={18} />
-                <span className="font-black tracking-wide">{tab.label}</span>
-              </button>
-            )
-          })}
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id, tab.href)}
+                  className={`flex items-center space-x-2 px-6 py-2 rounded-full transition-all duration-300 relative ${
+                    isActive
+                      ? 'bg-white text-black font-black'
+                      : 'text-white bg-transparent font-bold'
+                  }`}
+                >
+                  <Icon size={18} />
+                  <span className="font-black tracking-wide">{tab.label}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Get Your Own Site link below */}
+          <Link
+            href="/get-your-own-site"
+            className="mt-1 flex items-center space-x-1.5 px-4 py-1 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 text-white font-extrabold text-xs rounded-full border border-amber-300/20 shadow-md hover:scale-105 transition-all duration-300"
+          >
+            <span>Get Your Own Site ⭐</span>
+          </Link>
         </div>
       </div>
     </div>

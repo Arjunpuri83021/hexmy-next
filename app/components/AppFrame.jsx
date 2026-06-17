@@ -11,6 +11,7 @@ export default function AppFrame({ children }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
   const isReelsPage = pathname?.startsWith("/reels");
+  const isOwnSitePage = pathname?.startsWith("/get-your-own-site");
   const isHomePage = pathname === "/";
 
   const [showAds, setShowAds] = useState(false);
@@ -43,7 +44,7 @@ export default function AppFrame({ children }) {
 
       {/* Global scripts only for public site, not for admin */}
       {/* Step 2: Only show ads after 1 minute delay */}
-      {!isAdmin && !isReelsPage && showAds && (
+      {!isAdmin && !isReelsPage && !isOwnSitePage && showAds && (
         <>
           <Script src="//pl23903697.revenuecpmgate.com/5f/0a/3d/5f0a3dbfe0494732a6f51e9f464470b1.js" strategy="afterInteractive" />
           <Script src="//pl23903471.revenuecpmgate.com/26/ce/da/26ceda18834199e5759604d14f16cf08.js" strategy="afterInteractive" />

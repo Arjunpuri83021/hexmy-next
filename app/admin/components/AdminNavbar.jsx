@@ -32,6 +32,11 @@ export default function AdminNavbar() {
             <Link className={isActive("/admin/networks") ? "active" : ""} href="/admin/networks">Networks</Link>
           </li>
           <li>
+            <Link className={isActive("/admin/demos") ? "active" : ""} href="/admin/demos">
+              <i className="bi bi-collection-play me-1"></i>Demos
+            </Link>
+          </li>
+          <li>
             <Link className={isActive("/admin/stars-list") ? "active" : ""} href="/admin/stars-list">Stars</Link>
           </li>
           <li>

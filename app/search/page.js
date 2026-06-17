@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }) {
     try {
       const res = await api.searchPosts(q, page, 16)
       total = res?.totalRecords || 0
-    } catch (_) {}
+    } catch (_) { }
   }
 
   const title = q

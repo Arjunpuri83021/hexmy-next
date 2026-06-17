@@ -67,13 +67,13 @@ export const api = {
   getAllPosts: (page = 1, limit = 16) => request(`/getpostdata?page=${page}&limit=${limit}`),
 
   // Views update
-  updateViews: (id, currentViews = 0) => request(`/updateviews/${id}`, { 
-    method: 'POST', 
-    body: { views: currentViews + 1 } 
+  updateViews: (id, currentViews = 0) => request(`/updateviews/${id}`, {
+    method: 'POST',
+    body: { views: currentViews + 1 }
   }),
-  updateRvViews: (id, currentViews = 0) => request(`/rvupdateviews/${id}`, { 
-    method: 'POST', 
-    body: { views: currentViews + 1 } 
+  updateRvViews: (id, currentViews = 0) => request(`/rvupdateviews/${id}`, {
+    method: 'POST',
+    body: { views: currentViews + 1 }
   }),
 
   // Custom Content

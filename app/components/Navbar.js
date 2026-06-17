@@ -66,13 +66,13 @@ export default function Navbar() {
           const sd = await starsRes.json()
           // Dedupe stars by normalized key (lowercase, hyphen/space-insensitive)
           const starMap = new Map()
-          ;(sd.pornstars || []).forEach(star => {
-            const nm = (star?.name || '').trim()
-            if (!nm) return
-            const display = nm.replace(/-/g, ' ').trim()
-            const key = display.toLowerCase()
-            if (!starMap.has(key)) starMap.set(key, display)
-          })
+            ; (sd.pornstars || []).forEach(star => {
+              const nm = (star?.name || '').trim()
+              if (!nm) return
+              const display = nm.replace(/-/g, ' ').trim()
+              const key = display.toLowerCase()
+              if (!starMap.has(key)) starMap.set(key, display)
+            })
           setAllStars(Array.from(starMap.values()))
         }
       } catch (e) {
@@ -151,9 +151,20 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navigationItems.map((item) => {
               const Icon = item.icon
+              if (item.highlight) {
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="flex items-center space-x-1 px-3 py-1 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 text-white font-extrabold text-xs rounded-full border border-amber-300/20 shadow-md shadow-pink-500/10 hover:scale-105 hover:shadow-pink-500/30 transition-all duration-300"
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                )
+              }
               if (item.external) {
                 return (
                   <a
@@ -194,7 +205,7 @@ export default function Navbar() {
                 className="w-64 px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors duration-200"
               />
               <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
-              
+
               {/* Search Suggestions */}
               {showSuggestions && searchSuggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg max-h-64 overflow-y-auto z-50">
@@ -249,9 +260,22 @@ export default function Navbar() {
             </form>
 
             {/* Mobile Navigation Items */}
-            <div className="space-y-2">
+            <div className="space-y-2 px-2">
               {navigationItems.map((item) => {
                 const Icon = item.icon
+                if (item.highlight) {
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-center space-x-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 text-white font-bold text-center shadow-lg transition-all duration-200"
+                    >
+                      <Icon size={18} className="text-amber-200" />
+                      <span>{item.name}</span>
+                    </Link>
+                  )
+                }
                 if (item.external) {
                   return (
                     <a
@@ -279,7 +303,7 @@ export default function Navbar() {
                   </Link>
                 )
               })}
-              
+
               {/* Mobile Categories */}
               <div className="px-4 py-2">
                 <h3 className="text-sm font-semibold text-gray-400 mb-2">Categories</h3>
