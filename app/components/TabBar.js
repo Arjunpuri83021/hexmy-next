@@ -118,11 +118,10 @@ export default function TabBar() {
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id, tab.href)}
-                  className={`flex items-center space-x-2 px-6 py-2 rounded-full transition-all duration-300 relative ${
-                    isActive
+                  className={`flex items-center space-x-2 px-6 py-2 rounded-full transition-all duration-300 relative ${isActive
                       ? 'bg-white text-black font-black'
                       : 'text-white bg-transparent font-bold'
-                  }`}
+                    }`}
                 >
                   <Icon size={18} />
                   <span className="font-black tracking-wide">{tab.label}</span>
@@ -136,7 +135,7 @@ export default function TabBar() {
             href="/get-your-own-site"
             className="mt-1 flex items-center space-x-1.5 px-4 py-1 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 text-white font-extrabold text-xs rounded-full border border-amber-300/20 shadow-md hover:scale-105 transition-all duration-300"
           >
-            <span>Get Your Own Site ⭐</span>
+            <span>Get Your Own Porn Website ⭐</span>
           </Link>
         </div>
       </div>

@@ -60,6 +60,11 @@ export default function AdminNavbar() {
               <i className="bi bi-gear-fill me-1"></i>Schedule
             </Link>
           </li>
+          <li>
+            <Link className={isActive("/admin/scraper") ? "active" : ""} href="/admin/scraper">
+              <i className="bi bi-download me-1"></i>Scraper
+            </Link>
+          </li>
         </ul>
         <button className="admin-logout-btn" onClick={handleLogout}>
           Logout
