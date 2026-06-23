@@ -130,13 +130,64 @@ export default function TabBar() {
             })}
           </div>
 
-          {/* Get Your Own Site link below */}
-          <Link
-            href="/get-your-own-site"
-            className="mt-1 flex items-center space-x-1.5 px-4 py-1 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 text-white font-extrabold text-xs rounded-full border border-amber-300/20 shadow-md hover:scale-105 transition-all duration-300"
-          >
-            <span>Get Your Own Porn Website ⭐</span>
-          </Link>
+          {/* Get Your Own Site link below - High engagement CTA */}
+          <div className="relative mt-2 flex items-center justify-center">
+            <Link
+              href="/get-your-own-site"
+              style={{
+                background: 'linear-gradient(135deg, #f59e0b 0%, #ec4899 50%, #8b5cf6 100%)',
+                boxShadow: '0 0 16px rgba(236, 72, 153, 0.5)',
+                position: 'relative',
+                overflow: 'hidden',
+                animation: 'ctaPulse 2.5s ease-in-out infinite',
+                willChange: 'transform, opacity',
+              }}
+              className="relative z-10 flex items-center gap-2 px-5 py-2 text-white font-black text-sm rounded-full border-2 border-yellow-300/50 hover:scale-105 active:scale-95 transition-transform duration-150"
+            >
+              {/* Shimmer — uses transform instead of left for GPU acceleration */}
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '50%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)',
+                  transform: 'translateX(-200%)',
+                  animation: 'shimmerGPU 2.5s ease-in-out infinite',
+                  willChange: 'transform',
+                }}
+              />
+              <span>🔥</span>
+              <span>Get Your Own Porn Website</span>
+              <span
+                style={{
+                  background: '#facc15',
+                  color: '#000',
+                  fontSize: '9px',
+                  fontWeight: 900,
+                  padding: '2px 7px',
+                  borderRadius: '999px',
+                  letterSpacing: '0.04em',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                }}
+              >
+                ⭐ $75 ONLY
+              </span>
+            </Link>
+          </div>
+
+          <style>{`
+            @keyframes ctaPulse {
+              0%, 100% { transform: scale(1); opacity: 1; }
+              50% { transform: scale(1.04); opacity: 0.92; }
+            }
+            @keyframes shimmerGPU {
+              0% { transform: translateX(-200%); }
+              60%, 100% { transform: translateX(400%); }
+            }
+          `}</style>
         </div>
       </div>
     </div>

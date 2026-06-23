@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { api } from './lib/api'
 import VideoCard from './components/VideoCard'
+import PromoCard from './components/PromoCard'
 import Pagination from './components/Pagination'
 import { generateSeoMetadata } from './utils/seoHelper'
 
@@ -35,6 +36,16 @@ export default async function HomePage({ searchParams }) {
   const list = res.records || res.data || []
   const totalPages = res.totalPages || (res.totalRecords ? Math.max(1, Math.ceil(Number(res.totalRecords) / limit)) : 1)
 
+  // Insert PromoCard every 4 video cards
+  const PROMO_INTERVAL = 4
+  const gridItems = []
+  list.forEach((v, idx) => {
+    gridItems.push({ type: 'video', data: v, idx })
+    if ((idx + 1) % PROMO_INTERVAL === 0) {
+      gridItems.push({ type: 'promo', idx })
+    }
+  })
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold mb-6">Hexmy Free XXXHD Adult Content Videos And Free Porn Videos</h1>
@@ -45,9 +56,11 @@ export default async function HomePage({ searchParams }) {
           <h2 className="text-xl font-semibold">All Videos</h2>
         </div>
         <div className="grid video-grid">
-          {list.map((v, idx) => (
-            <VideoCard key={v._id || idx} video={v} priority={idx < 6} />
-          ))}
+          {gridItems.map((item) =>
+            item.type === 'promo'
+              ? <PromoCard key={`promo-${item.idx}`} />
+              : <VideoCard key={item.data._id || item.idx} video={item.data} priority={item.idx < 6} />
+          )}
         </div>
         <div className="mt-6">
           <Pagination basePath="/?" currentPage={page} totalPages={totalPages} />
@@ -56,3 +69,4 @@ export default async function HomePage({ searchParams }) {
     </div>
   )
 }
+
