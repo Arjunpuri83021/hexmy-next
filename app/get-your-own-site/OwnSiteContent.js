@@ -8,12 +8,12 @@ import {
   Globe, Search, PlayCircle, Lock, DollarSign
 } from 'lucide-react'
 
-export default function OwnSiteContent() {
+export default function OwnSiteContent({ initialNiches = [] }) {
   const [openFaqs, setOpenFaqs] = useState({})
   const [showMoreBenefits, setShowMoreBenefits] = useState(false)
   const [timeLeft, setTimeLeft] = useState({ hours: 14, minutes: 32, seconds: 45 })
-  const [niches, setNiches] = useState([])
-  const [nichesLoading, setNichesLoading] = useState(true)
+  const [niches, setNiches] = useState(initialNiches)
+  const [nichesLoading, setNichesLoading] = useState(initialNiches.length === 0)
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
@@ -37,6 +37,11 @@ export default function OwnSiteContent() {
 
   // Fetch demos from API
   useEffect(() => {
+    if (initialNiches && initialNiches.length > 0) {
+      setNiches(initialNiches)
+      setNichesLoading(false)
+      return
+    }
     const fetchDemos = async () => {
       try {
         setNichesLoading(true)
@@ -53,7 +58,7 @@ export default function OwnSiteContent() {
       }
     }
     fetchDemos()
-  }, [])
+  }, [initialNiches])
 
   const toggleFaq = (index) => {
     setOpenFaqs(prev => ({
@@ -234,21 +239,24 @@ export default function OwnSiteContent() {
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 px-4 md:px-8 max-w-7xl mx-auto z-10 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-400/15 via-emerald-500/15 to-teal-600/15 border border-cyan-500/30 text-cyan-400 font-extrabold text-xs tracking-wider uppercase mb-6 animate-pulse">
-          <Award size={14} className="text-amber-400" />
-          <span>Exclusive Live Offer: Get Your Adult Website</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400/15 via-orange-500/15 to-rose-600/15 border border-amber-500/30 text-amber-400 font-extrabold text-xs tracking-wider uppercase mb-6 animate-pulse">
+          <DollarSign size={14} className="text-amber-400" />
+          <span>💰 Start Earning Passive Income: Earn $1,000–$50,000+ Daily from Ads</span>
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight max-w-5xl mx-auto">
-          Want to Create Your Own {' '}
+          Create Your Own{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">
-            Adult website?
+            Porn Website
+          </span>{' '}
+          & Earn More Than{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 animate-pulse">
+            $1000 Daily
           </span>
         </h1>
 
-        <p className="mt-6 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
-          Start today with the most advanced, user-friendly, and compliance-ready adult WordPress theme.
-          Launch your site in less than 24 hour with 9 stunning niches and 6 premium preinstalled plugins.
+        <p className="mt-6 text-lg md:text-xl text-slate-400 max-w-4xl mx-auto leading-relaxed">
+          Turn adult traffic into pure passive income! We deliver a fully automated, compliance-ready adult video portal pre-loaded with 3,000+ HD videos. Simply integrate ad networks and start making <strong className="text-emerald-400 font-black">$1,000–$50,000+ per day</strong>. Full design, setup & secure offshore hosting done for you in under 24 hours!
         </p>
 
         <div className="mt-10 flex flex-wrap gap-4 justify-center">
@@ -282,6 +290,55 @@ export default function OwnSiteContent() {
               <p className="text-xs text-slate-400 mt-1">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Video Demonstration Section */}
+      <section id="demo-video" className="py-16 px-4 md:px-8 max-w-5xl mx-auto border-t border-slate-900 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-black tracking-wider uppercase">
+            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+            Live System Demo
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-100 mt-4">
+            See the Website & Admin Panel in Action
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base mt-3 leading-relaxed">
+            Watch our step-by-step walkthrough to see how easily you can manage your website, import thousands of HD videos, customize themes, and configure ad networks using the advanced admin panel.
+          </p>
+        </div>
+
+        {/* Video Player Box with Premium Neon Glow */}
+        <div className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden border border-slate-850 bg-slate-950 p-2 md:p-3 shadow-2xl shadow-cyan-500/5 group hover:border-cyan-500/30 transition-all duration-500">
+          {/* Glow backdrop effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 via-transparent to-emerald-500/5 opacity-50 pointer-events-none rounded-3xl" />
+          <div className="absolute -inset-px rounded-3xl bg-gradient-to-r from-cyan-500/25 to-emerald-500/25 opacity-0 group-hover:opacity-100 transition-opacity blur duration-700 pointer-events-none" />
+          
+          <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-900">
+            <video
+              className="w-full h-full object-contain"
+              src="https://res.cloudinary.com/dhdwfueqh/video/upload/v1782296783/video_20260624_153842_edit_1_kbhfia.mp4"
+              controls
+              playsInline
+              preload="metadata"
+            />
+          </div>
+        </div>
+
+        {/* Quick Video Highlights/Features */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto text-center">
+          <div className="p-4 bg-slate-900/30 border border-slate-850 rounded-xl">
+            <h4 className="text-sm font-bold text-slate-200">🛠️ Admin Panel Tour</h4>
+            <p className="text-xs text-slate-500 mt-1">See the secure login & dashboard options</p>
+          </div>
+          <div className="p-4 bg-slate-900/30 border border-slate-850 rounded-xl">
+            <h4 className="text-sm font-bold text-slate-200">⚡ Instant 1-Click Import</h4>
+            <p className="text-xs text-slate-500 mt-1">Watch 1,000+ HD videos loaded instantly</p>
+          </div>
+          <div className="p-4 bg-slate-900/30 border border-slate-850 rounded-xl">
+            <h4 className="text-sm font-bold text-slate-200">🤑 Monetization Setup</h4>
+            <p className="text-xs text-slate-500 mt-1">Learn how to easily integrate ad networks</p>
+          </div>
         </div>
       </section>
 
