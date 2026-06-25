@@ -17,7 +17,7 @@ export default function TelegramPopup() {
   };
 
   const handleJoinTelegram = () => {
-    window.open("https://t.me/hexTheme", "_blank");
+    window.open("https://t.me/viphexmy", "_blank");
     setShowPopup(false);
   };
 
