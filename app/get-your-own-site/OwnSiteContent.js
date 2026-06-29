@@ -618,9 +618,9 @@ export default function OwnSiteContent({ initialNiches = [] }) {
             <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center font-black text-white shadow-lg">
               1
             </div>
-            <h3 className="text-lg font-bold text-slate-100 mt-2">Send Details on Telegram</h3>
+            <h3 className="text-lg font-bold text-slate-100 mt-2">Send Details via Telegram or Email</h3>
             <p className="text-slate-400 text-sm mt-3 leading-relaxed">
-              Click any order button on this page to DM us directly at <a href="https://t.me/hexTheme" target="_blank" rel="noopener noreferrer" className="text-cyan-400 font-bold hover:underline">@hexTheme</a>. 
+              Click any order button on this page to DM us directly at <a href="https://t.me/hexTheme" target="_blank" rel="noopener noreferrer" className="text-cyan-400 font-bold hover:underline">@hexTheme</a> or email us at <a href="mailto:support@hextheme.com" className="text-cyan-400 font-bold hover:underline">support@hextheme.com</a>. 
               Provide us your selected niche theme choice, desired website name, logo files (or text preferences), and server details.
             </p>
           </div>
