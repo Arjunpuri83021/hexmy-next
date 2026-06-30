@@ -1,3 +1,5 @@
+import { getOrSetCache } from './redisCache'
+
 function getApiBase() {
   const envBase = (process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || '').trim().replace(/\/$/, '')
   if (envBase) return envBase
@@ -9,10 +11,7 @@ function getApiBase() {
   return (process.env.NEXT_PUBLIC_SITE_URL || 'https://hexmy.com').replace(/\/$/, '')
 }
 
-async function request(path, { method = 'GET', headers = {}, body } = {}) {
-  const base = getApiBase()
-  const url = path.startsWith('http') ? path : `${base}${path}`
-
+async function executeFetch(url, { method = 'GET', headers = {}, body } = {}) {
   const res = await fetch(url, {
     method,
     headers: {
@@ -35,6 +34,25 @@ async function request(path, { method = 'GET', headers = {}, body } = {}) {
     return res.json()
   }
   return res.text()
+}
+
+async function request(path, { method = 'GET', headers = {}, body } = {}) {
+  const base = getApiBase()
+  const url = path.startsWith('http') ? path : `${base}${path}`
+
+  // Caching GET requests or reading video details via POST on the server-side
+  if (typeof window === 'undefined' && (method === 'GET' || (method === 'POST' && path.startsWith('/getVideo/')))) {
+    try {
+      const cacheKey = `hexmy:api:${method}:${path}`
+      
+      // Cache read requests for 5 minutes (300 seconds)
+      return await getOrSetCache(cacheKey, () => executeFetch(url, { method, headers, body }), 300)
+    } catch (err) {
+      console.warn('⚠️ Cache integration error, falling back to direct fetch:', err.message)
+    }
+  }
+
+  return executeFetch(url, { method, headers, body })
 }
 
 export const api = {
